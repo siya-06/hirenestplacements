@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hirenest-placements.vercel.app/sitemap.xml
