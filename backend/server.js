@@ -10,6 +10,9 @@ import contactRoutes from './routes/contactRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
 import nodemailer from 'nodemailer';
+import dns from 'dns';
+
+dns.setDefaultResultOrder('ipv4first');
 
 // Load environmental variables
 dotenv.config();
