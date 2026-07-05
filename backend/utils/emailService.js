@@ -14,21 +14,23 @@ const isSmtpConfigured = () => {
   );
 };
 
+let transporterInstance = null;
+
 // Create Nodemailer Transporter
 const getTransporter = () => {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: process.env.SMTP_PORT === '465', // true for SSL port 465
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-    family: 4,
-    connectionTimeout: 30000,
-    greetingTimeout: 30000,
-    socketTimeout: 30000,
-  });
+  if (!transporterInstance) {
+    console.log('[emailService] Creating a SINGLE shared transporter instance...');
+    transporterInstance = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_PORT === '465',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+  }
+  return transporterInstance;
 };
 
 // Main generic email sending routine
@@ -53,7 +55,10 @@ export const sendEmail = async ({ to, subject, html, text }) => {
     console.log('User:', process.env.SMTP_USER);
     console.log('====================================');
 
+    console.log('[emailService] Fetching transporter...');
     const transporter = getTransporter();
+
+    console.log('[emailService] Attempting transporter.sendMail()...');
     const info = await transporter.sendMail({
       from: `"HireNest Placements" <${process.env.SMTP_USER}>`,
       to,
