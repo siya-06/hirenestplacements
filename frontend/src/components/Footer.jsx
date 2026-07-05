@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const COMPANY_EMAIL = import.meta.env.VITE_COMPANY_EMAIL || 'hirenestplacements@gmail.com';
+const COMPANY_EMAIL = import.meta.env.VITE_COMPANY_EMAIL || 'info@hirenestplacement.com';
 
 const Footer = () => {
   return (
