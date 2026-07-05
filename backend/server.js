@@ -9,6 +9,8 @@ import candidateRoutes from './routes/candidateRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
+import nodemailer from 'nodemailer';
+
 // Load environmental variables
 dotenv.config();
 
@@ -30,6 +32,27 @@ app.use('/api/jobs', jobRoutes);
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/contacts', contactRoutes);
+
+// Temporary Email Diagnostics Route
+app.get('/api/test-email', async (req, res) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_PORT === '465',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+      },
+    });
+
+    await transporter.verify();
+    res.status(200).json({ success: true, message: 'SMTP connection verified successfully.' });
+  } catch (error) {
+    console.error('SMTP Verification failed:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 // Root Check Endpoint
 app.get('/', (req, res) => {
