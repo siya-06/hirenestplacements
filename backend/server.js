@@ -39,6 +39,9 @@ app.use('/api/contacts', contactRoutes);
 // Temporary Email Diagnostics Route
 app.get('/api/test-email', async (req, res) => {
   try {
+    const dnsLookup = await dns.promises.lookup(process.env.SMTP_HOST);
+    console.log('DNS Lookup for SMTP Host:', dnsLookup);
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
@@ -69,6 +72,9 @@ app.get('/api/test-email', async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'SMTP connection verified and test email sent successfully.',
+      host: process.env.SMTP_HOST,
+      resolvedIp: dnsLookup.address,
+      family: dnsLookup.family,
       details: {
         messageId: info.messageId,
         accepted: info.accepted,
@@ -77,7 +83,23 @@ app.get('/api/test-email', async (req, res) => {
     });
   } catch (error) {
     console.error('SMTP diagnostics failed:', error.message);
-    res.status(500).json({ success: false, error: error.message });
+    
+    let dnsDetails = { host: process.env.SMTP_HOST, resolvedIp: 'Failed lookup', family: 'N/A' };
+    try {
+      const dnsLookup = await dns.promises.lookup(process.env.SMTP_HOST);
+      dnsDetails.resolvedIp = dnsLookup.address;
+      dnsDetails.family = dnsLookup.family;
+    } catch (dnsErr) {
+      console.error('Secondary DNS lookup during error handling failed:', dnsErr.message);
+    }
+
+    res.status(500).json({ 
+      success: false, 
+      error: error.message,
+      host: dnsDetails.host,
+      resolvedIp: dnsDetails.resolvedIp,
+      family: dnsDetails.family
+    });
   }
 });
 
