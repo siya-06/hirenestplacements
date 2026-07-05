@@ -28,6 +28,9 @@ const getTransporter = () => {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      lookup: (hostname, options, callback) => {
+        return dns.lookup(hostname, { family: 4 }, callback);
+      }
     });
   }
   return transporterInstance;

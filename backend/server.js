@@ -9,7 +9,6 @@ import candidateRoutes from './routes/candidateRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
-import nodemailer from 'nodemailer';
 import dns from 'dns';
 
 dns.setDefaultResultOrder('ipv4first');
@@ -36,73 +35,6 @@ app.use('/api/candidates', candidateRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/contacts', contactRoutes);
 
-// Temporary Email Diagnostics Route
-app.get('/api/test-email', async (req, res) => {
-  try {
-    const dnsLookup = await dns.promises.lookup(process.env.SMTP_HOST);
-    console.log('DNS Lookup for SMTP Host:', dnsLookup);
-
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_PORT === '465',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
-
-    await transporter.verify();
-
-    const companyEmail = process.env.COMPANY_EMAIL || 'info@hirenestplacement.com';
-    const info = await transporter.sendMail({
-      from: `"HireNest Diagnostics" <${process.env.SMTP_USER}>`,
-      to: companyEmail,
-      subject: 'HireNest Placements SMTP Test Email',
-      text: 'This is a real diagnostics test email sent to verify SMTP setup.',
-      html: '<p>This is a real diagnostics test email sent to verify SMTP setup.</p>',
-    });
-
-    console.log('Test Email Send Results:', {
-      messageId: info.messageId,
-      accepted: info.accepted,
-      rejected: info.rejected,
-    });
-
-    res.status(200).json({
-      success: true,
-      message: 'SMTP connection verified and test email sent successfully.',
-      host: process.env.SMTP_HOST,
-      resolvedIp: dnsLookup.address,
-      family: dnsLookup.family,
-      details: {
-        messageId: info.messageId,
-        accepted: info.accepted,
-        rejected: info.rejected,
-      }
-    });
-  } catch (error) {
-    console.error('SMTP diagnostics failed:', error.message);
-    
-    let dnsDetails = { host: process.env.SMTP_HOST, resolvedIp: 'Failed lookup', family: 'N/A' };
-    try {
-      const dnsLookup = await dns.promises.lookup(process.env.SMTP_HOST);
-      dnsDetails.resolvedIp = dnsLookup.address;
-      dnsDetails.family = dnsLookup.family;
-    } catch (dnsErr) {
-      console.error('Secondary DNS lookup during error handling failed:', dnsErr.message);
-    }
-
-    res.status(500).json({ 
-      success: false, 
-      error: error.message,
-      host: dnsDetails.host,
-      resolvedIp: dnsDetails.resolvedIp,
-      family: dnsDetails.family
-    });
-  }
-});
-
 // Root Check Endpoint
 app.get('/', (req, res) => {
   res.send('HireNest Placements API service is active.');
@@ -123,6 +55,20 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server running on port ${PORT} in development mode`);
+  
+  if (process.env.SMTP_HOST) {
+    try {
+      const dnsLookup = await dns.promises.lookup(process.env.SMTP_HOST);
+      console.log('==================================================');
+      console.log('SMTP HOST RESOLUTION AT STARTUP:');
+      console.log(`Host: ${process.env.SMTP_HOST}`);
+      console.log(`Resolved IP: ${dnsLookup.address}`);
+      console.log(`Address Family: IPv${dnsLookup.family}`);
+      console.log('==================================================');
+    } catch (err) {
+      console.error('Failed to resolve SMTP host at startup:', err.message);
+    }
+  }
 });
