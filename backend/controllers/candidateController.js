@@ -136,9 +136,14 @@ export const createCandidate = async (req, res) => {
 
     const savedCandidate = await candidate.save();
 
-    // Trigger emails (asynchronously, non-blocking to server response)
-    sendCandidateConfirmation(savedCandidate.email, savedCandidate.fullName, positionApplied);
-    sendCompanyCandidateNotification(savedCandidate, positionApplied);
+    // Trigger emails sequentially to avoid concurrent SMTP connections
+    console.log('Sending candidate confirmation...');
+    await sendCandidateConfirmation(savedCandidate.email, savedCandidate.fullName, positionApplied);
+    console.log('Candidate confirmation sent.');
+
+    console.log('Sending admin notification...');
+    await sendCompanyCandidateNotification(savedCandidate, positionApplied);
+    console.log('Admin notification sent.');
 
     res.status(201).json({
       message: 'Application submitted successfully!',
