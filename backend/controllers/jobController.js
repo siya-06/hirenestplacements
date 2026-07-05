@@ -131,3 +131,21 @@ export const updateJob = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Delete a job mandate
+// @route   DELETE /api/jobs/:id
+// @access  Private/Admin
+export const deleteJob = async (req, res) => {
+  try {
+    const job = await Job.findByIdAndDelete(req.params.id);
+    if (!job) {
+      return res.status(404).json({ message: 'Job posting not found.' });
+    }
+    res.status(200).json({ message: 'Job posting deleted successfully.' });
+  } catch (error) {
+    if (error.kind === 'ObjectId') {
+      return res.status(404).json({ message: 'Job posting not found.' });
+    }
+    res.status(500).json({ message: error.message });
+  }
+};

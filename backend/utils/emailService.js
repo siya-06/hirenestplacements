@@ -72,20 +72,19 @@ export const sendCandidateConfirmation = async (candidateEmail, candidateName, p
 // @desc Send new candidate notification alert to the company inbox
 export const sendCompanyCandidateNotification = async (candidate, positionApplied) => {
   const companyEmail = process.env.COMPANY_EMAIL || 'info@hirenest.com';
-  const subject = `[NEW APPLICATION] ${candidate.fullName} - ${positionApplied}`;
-  const text = `A new resume application has been submitted:\n\nCandidate Name: ${candidate.fullName}\nEmail Address: ${candidate.email}\nPhone: ${candidate.phone}\nPosition Applied: ${positionApplied}\nLocation: ${candidate.location}\nYears of Experience: ${candidate.experience}\nHighest Qualification: ${candidate.qualification}\nSkills: ${candidate.skills.join(', ')}\nLinkedIn: ${candidate.linkedin || 'N/A'}\nResume Download URL: ${candidate.resumeUrl}`;
+  const subject = `New Candidate Application - ${positionApplied}`;
+  const text = `A new resume application has been submitted:\n\nCandidate Name: ${candidate.fullName}\nEmail Address: ${candidate.email}\nPosition Applied: ${positionApplied}\nLocation: ${candidate.location}\nYears of Experience: ${candidate.experience}\nHighest Qualification: ${candidate.qualification}\nSkills: ${candidate.skills.join(', ')}\nLinkedIn: ${candidate.linkedin || 'N/A'}\nResume Download URL: ${candidate.resumeUrl}`;
   const html = `
     <h2>New Candidate Application Submitted</h2>
     <p><strong>Candidate Name:</strong> ${candidate.fullName}</p>
     <p><strong>Email Address:</strong> ${candidate.email}</p>
-    <p><strong>Phone Number:</strong> ${candidate.phone}</p>
     <p><strong>Position Applied:</strong> ${positionApplied}</p>
     <p><strong>Location:</strong> ${candidate.location}</p>
     <p><strong>Years of Experience:</strong> ${candidate.experience}</p>
     <p><strong>Highest Qualification:</strong> ${candidate.qualification}</p>
     <p><strong>Skills:</strong> ${candidate.skills.join(', ')}</p>
     <p><strong>LinkedIn Profile:</strong> <a href="${candidate.linkedin}" target="_blank">${candidate.linkedin || 'N/A'}</a></p>
-    <p><strong>Resume Attachment:</strong> <a href="${candidate.resumeUrl}" target="_blank">Download Resume File</a></p>
+    <p><strong>Resume Attachment:</strong> <a href="${candidate.resumeUrl}" target="_blank">Download/View Resume File</a></p>
   `;
   return sendEmail({ to: companyEmail, subject, text, html });
 };
@@ -93,7 +92,7 @@ export const sendCompanyCandidateNotification = async (candidate, positionApplie
 // @desc Send contact form inquiry alert to the company inbox
 export const sendCompanyContactNotification = async (contact) => {
   const companyEmail = process.env.COMPANY_EMAIL || 'info@hirenest.com';
-  const subject = `[CONTACT FORM INQUIRY] ${contact.subject} - from ${contact.name}`;
+  const subject = 'New Contact Inquiry - HireNest Placements';
   const text = `A new contact message has been submitted:\n\nSender Name: ${contact.name}\nEmail Address: ${contact.email}\nSubject: ${contact.subject}\nMessage Content:\n${contact.message}`;
   const html = `
     <h2>New Contact Inquiry Submitted</h2>

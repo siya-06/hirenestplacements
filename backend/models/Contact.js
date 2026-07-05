@@ -17,6 +17,10 @@ const contactSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  reviewed: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

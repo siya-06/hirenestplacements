@@ -38,3 +38,23 @@ export const getContacts = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Mark a contact inquiry as reviewed
+// @route   PATCH /api/contacts/:id/reviewed
+// @access  Private/Admin
+export const updateContactReviewed = async (req, res) => {
+  try {
+    const contact = await Contact.findById(req.params.id);
+    if (!contact) {
+      return res.status(404).json({ message: 'Inquiry not found.' });
+    }
+    contact.reviewed = true;
+    const updatedContact = await contact.save();
+    res.status(200).json({ message: 'Inquiry marked as reviewed.', data: updatedContact });
+  } catch (error) {
+    if (error.kind === 'ObjectId') {
+      return res.status(404).json({ message: 'Inquiry not found.' });
+    }
+    res.status(500).json({ message: error.message });
+  }
+};

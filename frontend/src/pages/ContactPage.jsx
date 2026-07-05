@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const COMPANY_EMAIL = import.meta.env.VITE_COMPANY_EMAIL || 'hirenestplacements@gmail.com';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -105,7 +106,7 @@ const ContactPage = () => {
           </div>
           <h1 className="font-display-hero text-display-hero mb-6">Contact Our Team</h1>
           <p className="font-body-lg text-on-primary-container max-w-2xl mx-auto">
-            Get in touch with our specialist recruiting consultants in London, Berlin, or San Francisco. We look forward to partnering with you.
+            Get in touch with our specialist recruiting consultants in Lucknow or Ahmedabad. We look forward to partnering with you.
           </p>
         </div>
         <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0)", backgroundSize: "24px 24px" }}></div>
@@ -121,7 +122,7 @@ const ContactPage = () => {
               <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider">❖ Find Us</div>
               <h2 className="font-headline-lg text-headline-lg text-primary mb-6">Our Offices</h2>
               <p className="text-on-surface-variant font-body-md leading-relaxed">
-                HireNest Placements represents partners worldwide, coordinating executive level searches and recruitment campaigns from our headquarters in Mayfair, London.
+                HireNest Placements coordinates executive recruitment campaigns from our offices in Uttar Pradesh and Gujarat.
               </p>
             </div>
 
@@ -131,10 +132,23 @@ const ContactPage = () => {
                   <span className="material-symbols-outlined text-[24px]">location_on</span>
                 </div>
                 <div>
-                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Office Address</h4>
+                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Lucknow Office</h4>
                   <p className="text-on-surface-variant font-body-md leading-relaxed">
-                    Mayfair Executive Suites<br />
-                    London, W1J 7JZ, United Kingdom
+                    Hazratganj, Lucknow,<br />
+                    Uttar Pradesh, India
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-6 items-start">
+                <div className="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center text-primary shrink-0 font-medium">
+                  <span className="material-symbols-outlined text-[24px]">location_on</span>
+                </div>
+                <div>
+                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Ahmedabad Office</h4>
+                  <p className="text-on-surface-variant font-body-md leading-relaxed">
+                    CG Road, Ahmedabad,<br />
+                    Gujarat, India
                   </p>
                 </div>
               </div>
@@ -145,21 +159,9 @@ const ContactPage = () => {
                 </div>
                 <div>
                   <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Business Inquiries</h4>
-                  <a className="text-secondary font-bold underline underline-offset-4 font-body-md" href="mailto:contact@hirenest.com">
-                    contact@hirenest.com
+                  <a className="text-secondary font-bold underline underline-offset-4 font-body-md" href={`mailto:${COMPANY_EMAIL}`}>
+                    {COMPANY_EMAIL}
                   </a>
-                </div>
-              </div>
-
-              <div className="flex gap-6 items-start">
-                <div className="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center text-primary shrink-0 font-medium">
-                  <span className="material-symbols-outlined text-[24px]">call</span>
-                </div>
-                <div>
-                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Phone Lines</h4>
-                  <p className="text-on-surface-variant font-body-md">
-                    +44 (0) 20 7946 0123
-                  </p>
                 </div>
               </div>
             </div>

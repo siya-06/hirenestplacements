@@ -12,7 +12,6 @@ const SubmitResumePage = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    phone: '',
     location: '',
     qualification: '',
     experience: '',
@@ -95,13 +94,6 @@ const SubmitResumePage = () => {
       errors.email = 'Please provide a valid email address.';
     }
 
-    // Phone check
-    if (!formData.phone.trim()) {
-      errors.phone = 'Phone number is required.';
-    } else if (formData.phone.length < 7) {
-      errors.phone = 'Please provide a valid telephone number.';
-    }
-
     if (!formData.location.trim()) errors.location = 'Current location details are required.';
     if (!formData.qualification.trim()) errors.qualification = 'Highest qualification is required.';
     
@@ -143,7 +135,6 @@ const SubmitResumePage = () => {
     const submissionData = new FormData();
     submissionData.append('fullName', formData.fullName.trim());
     submissionData.append('email', formData.email.trim());
-    submissionData.append('phone', formData.phone.trim());
     submissionData.append('location', formData.location.trim());
     submissionData.append('qualification', formData.qualification.trim());
     submissionData.append('experience', formData.experience);
@@ -164,7 +155,6 @@ const SubmitResumePage = () => {
       setFormData({
         fullName: '',
         email: '',
-        phone: '',
         location: '',
         qualification: '',
         experience: '',
@@ -255,33 +245,18 @@ const SubmitResumePage = () => {
               </div>
             </div>
 
-            {/* Grid 2: Contacts & Address */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label htmlFor="phone" className="block text-on-surface-variant font-label-md mb-2">Phone Number *</label>
-                <input 
-                  type="tel" 
-                  id="phone" 
-                  className={`w-full bg-surface-container border ${validationErrors.phone ? 'border-error' : 'border-outline-variant'} rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-sm`}
-                  placeholder="e.g. +44 20 7946 0123"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-                {validationErrors.phone && <p className="text-error text-xs mt-1.5 font-medium">{validationErrors.phone}</p>}
-              </div>
-              
-              <div>
-                <label htmlFor="location" className="block text-on-surface-variant font-label-md mb-2">Current Location *</label>
-                <input 
-                  type="text" 
-                  id="location" 
-                  className={`w-full bg-surface-container border ${validationErrors.location ? 'border-error' : 'border-outline-variant'} rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-sm`}
-                  placeholder="e.g. London, UK"
-                  value={formData.location}
-                  onChange={handleChange}
-                />
-                {validationErrors.location && <p className="text-error text-xs mt-1.5 font-medium">{validationErrors.location}</p>}
-              </div>
+            {/* Address Details */}
+            <div>
+              <label htmlFor="location" className="block text-on-surface-variant font-label-md mb-2">Current Location *</label>
+              <input 
+                type="text" 
+                id="location" 
+                className={`w-full bg-surface-container border ${validationErrors.location ? 'border-error' : 'border-outline-variant'} rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-sm`}
+                placeholder="e.g. Lucknow, Uttar Pradesh"
+                value={formData.location}
+                onChange={handleChange}
+              />
+              {validationErrors.location && <p className="text-error text-xs mt-1.5 font-medium">{validationErrors.location}</p>}
             </div>
 
             {/* Grid 3: Experience & Degree */}

@@ -31,7 +31,7 @@ const AboutPage = () => {
               HireNest Placements began with a clear purpose: to bridge the gap between world-class organizations and the unique executive talent they require to succeed. Unlike typical transactional recruiting agencies, we position ourselves as strategic advisors, ensuring long-term cultural alignment and mutual success.
             </p>
             <p className="text-on-surface-variant font-body-md mb-6 leading-relaxed">
-              Over the last decade, we have expanded our reach to major global hubs, including London, New York, Berlin, and Singapore. Our dedicated consultants specialize in sectors spanning from financial technology to artificial intelligence systems, delivering results with unparalleled efficiency.
+              Over the last decade, we have focused our operations in major industrial and technology corridors, with dedicated hubs in Lucknow, Uttar Pradesh and Ahmedabad, Gujarat. Our specialist consultants partner with organizations across key sectors, including the IT industry, construction, water treatment, logistics, finance, and real estate, delivering results with unparalleled efficiency.
             </p>
           </div>
           <div className="rounded-3xl overflow-hidden shadow-xl aspect-video lg:aspect-[4/3] bg-surface-container-high">

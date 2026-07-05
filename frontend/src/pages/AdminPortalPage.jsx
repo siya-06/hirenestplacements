@@ -4,6 +4,12 @@ import axios from 'axios';
 const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const AdminPortalPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
   const [activeTab, setActiveTab] = useState('candidates'); // candidates, jobs, inquiries
   
   // Data States
@@ -12,7 +18,7 @@ const AdminPortalPage = () => {
   const [inquiries, setInquiries] = useState([]);
   
   // Loading & Error States
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [actionSuccess, setActionSuccess] = useState('');
 
@@ -37,13 +43,46 @@ const AdminPortalPage = () => {
     benefits: ''
   });
 
+  const getHeaders = () => {
+    const token = localStorage.getItem('adminToken');
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
+  };
+
+  // Session Verification on mount
+  useEffect(() => {
+    const verifySession = async () => {
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        setAuthLoading(false);
+        return;
+      }
+      try {
+        await axios.get(`${BACKEND_URL}/admin/verify`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setIsAuthenticated(true);
+      } catch (err) {
+        console.error('Session validation failed:', err);
+        localStorage.removeItem('adminToken');
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+    verifySession();
+  }, []);
+
   // Fetch data helpers
   const fetchCandidates = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/candidates`);
+      const res = await axios.get(`${BACKEND_URL}/candidates`, getHeaders());
       setCandidates(res.data);
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) handleLogout();
       setErrorMsg('Failed to load candidate applications.');
     }
   };
@@ -60,15 +99,17 @@ const AdminPortalPage = () => {
 
   const fetchInquiries = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/contacts`);
+      const res = await axios.get(`${BACKEND_URL}/contacts`, getHeaders());
       setInquiries(res.data);
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) handleLogout();
       setErrorMsg('Failed to load contact inquiries.');
     }
   };
 
   const loadData = async () => {
+    if (!isAuthenticated) return;
     setLoading(true);
     setErrorMsg('');
     setActionSuccess('');
@@ -84,16 +125,42 @@ const AdminPortalPage = () => {
   };
 
   useEffect(() => {
-    document.title = "Internal Admin Dashboard | HireNest Placements";
-    loadData();
-  }, [activeTab]);
+    if (isAuthenticated) {
+      document.title = "Internal Admin Dashboard | HireNest Placements";
+      loadData();
+    }
+  }, [activeTab, isAuthenticated]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoginError('');
+    try {
+      const res = await axios.post(`${BACKEND_URL}/admin/login`, {
+        email: loginEmail,
+        password: loginPassword
+      });
+      localStorage.setItem('adminToken', res.data.token);
+      setIsAuthenticated(true);
+    } catch (err) {
+      console.error(err);
+      setLoginError(err.response?.data?.message || 'Login failed. Please verify credentials.');
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    setIsAuthenticated(false);
+    setCandidates([]);
+    setJobs([]);
+    setInquiries([]);
+  };
 
   // Handle Candidate Status Patch
   const handleStatusChange = async (candidateId, newStatus) => {
     try {
       setErrorMsg('');
       setActionSuccess('');
-      const res = await axios.patch(`${BACKEND_URL}/candidates/${candidateId}/status`, { status: newStatus });
+      await axios.patch(`${BACKEND_URL}/candidates/${candidateId}/status`, { status: newStatus }, getHeaders());
       setActionSuccess(`Candidate status updated to "${newStatus}" successfully.`);
       
       // Update local state
@@ -103,6 +170,7 @@ const AdminPortalPage = () => {
       }
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) handleLogout();
       setErrorMsg(err.response?.data?.message || 'Failed to update candidate status.');
     }
   };
@@ -156,11 +224,11 @@ const AdminPortalPage = () => {
     try {
       if (editingJob) {
         // Edit API call
-        const res = await axios.put(`${BACKEND_URL}/jobs/${editingJob._id}`, jobForm);
+        await axios.put(`${BACKEND_URL}/jobs/${editingJob._id}`, jobForm, getHeaders());
         setActionSuccess(`Job "${jobForm.title}" updated successfully.`);
       } else {
         // Create API call
-        const res = await axios.post(`${BACKEND_URL}/jobs`, jobForm);
+        await axios.post(`${BACKEND_URL}/jobs`, jobForm, getHeaders());
         setActionSuccess(`Job "${jobForm.title}" created successfully.`);
       }
       
@@ -168,6 +236,7 @@ const AdminPortalPage = () => {
       fetchJobs(); // refresh
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) handleLogout();
       setErrorMsg(err.response?.data?.message || 'Failed to submit job details.');
     }
   };
@@ -179,15 +248,48 @@ const AdminPortalPage = () => {
       setActionSuccess('');
       const updatedActiveState = !job.active;
       
-      const res = await axios.put(`${BACKEND_URL}/jobs/${job._id}`, { active: updatedActiveState });
-      
+      await axios.put(`${BACKEND_URL}/jobs/${job._id}`, { active: updatedActiveState }, getHeaders());
       setActionSuccess(`Job "${job.title}" has been ${updatedActiveState ? 'enabled' : 'disabled'} successfully.`);
       
       // Update local state
       setJobs(prev => prev.map(j => j._id === job._id ? { ...j, active: updatedActiveState } : j));
     } catch (err) {
       console.error(err);
+      if (err.response?.status === 401) handleLogout();
       setErrorMsg('Failed to toggle job active status.');
+    }
+  };
+
+  // Handle Job Deletion
+  const handleDeleteJob = async (job) => {
+    if (!window.confirm(`Are you sure you want to permanently delete the job posting for "${job.title}"?`)) {
+      return;
+    }
+    try {
+      setErrorMsg('');
+      setActionSuccess('');
+      await axios.delete(`${BACKEND_URL}/jobs/${job._id}`, getHeaders());
+      setActionSuccess(`Job "${job.title}" has been deleted successfully.`);
+      setJobs(prev => prev.filter(j => j._id !== job._id));
+    } catch (err) {
+      console.error(err);
+      if (err.response?.status === 401) handleLogout();
+      setErrorMsg('Failed to delete job posting.');
+    }
+  };
+
+  // Handle Marking Inquiry as Reviewed
+  const handleMarkInquiryReviewed = async (inqId) => {
+    try {
+      setErrorMsg('');
+      setActionSuccess('');
+      await axios.patch(`${BACKEND_URL}/contacts/${inqId}/reviewed`, {}, getHeaders());
+      setActionSuccess('Inquiry marked as reviewed successfully.');
+      setInquiries(prev => prev.map(inq => inq._id === inqId ? { ...inq, reviewed: true } : inq));
+    } catch (err) {
+      console.error(err);
+      if (err.response?.status === 401) handleLogout();
+      setErrorMsg('Failed to update inquiry status.');
     }
   };
 
@@ -204,6 +306,72 @@ const AdminPortalPage = () => {
     return matchesSearch && matchesStatus;
   });
 
+  // Auth screen display block
+  if (authLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[500px] bg-background">
+        <div className="text-center">
+          <span className="material-symbols-outlined text-4xl text-primary animate-spin mb-3">progress_activity</span>
+          <p className="text-on-surface-variant font-label-md">Checking credentials...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center bg-surface-container-lowest px-6 py-12">
+        <div className="bg-surface border border-outline-variant p-8 md:p-12 rounded-3xl shadow-xl w-full max-w-md text-center">
+          <img src="/logo.jpg" alt="HireNest Placements Logo" className="h-20 w-20 object-cover rounded-2xl mx-auto mb-6 shadow-md" />
+          <h2 className="font-headline-lg text-headline-lg text-primary mb-2">HireNest Placements</h2>
+          <p className="text-on-surface-variant text-sm mb-8 italic">"Reach Beyond The Limits"</p>
+          <h3 className="font-title-medium text-lg font-bold text-on-surface mb-6">Admin Console Login</h3>
+          
+          {loginError && (
+            <div className="mb-6 p-4 bg-error-container text-on-error-container border border-error/20 rounded-xl flex items-center gap-2 text-left">
+              <span className="material-symbols-outlined text-xl">error</span>
+              <span className="text-sm font-label-md font-medium">{loginError}</span>
+            </div>
+          )}
+          
+          <form onSubmit={handleLogin} className="space-y-4 text-left">
+            <div>
+              <label htmlFor="loginEmail" className="block text-on-surface-variant font-label-md mb-2 text-xs uppercase tracking-wider font-semibold">Email Address</label>
+              <input 
+                type="email" 
+                id="loginEmail" 
+                required
+                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-sm"
+                placeholder="admin@hirenest.com"
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="loginPassword" className="block text-on-surface-variant font-label-md mb-2 text-xs uppercase tracking-wider font-semibold">Password</label>
+              <input 
+                type="password" 
+                id="loginPassword" 
+                required
+                className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary text-sm"
+                placeholder="••••••••"
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+              />
+            </div>
+            <button 
+              type="submit" 
+              className="w-full mt-6 py-3.5 bg-primary text-on-primary font-bold text-sm rounded-full transition-all hover:brightness-105 active:scale-95 flex items-center justify-center gap-2"
+            >
+              Sign In
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  // Dashboard interface
   return (
     <div className="bg-background min-h-screen">
       
@@ -222,6 +390,12 @@ const AdminPortalPage = () => {
               className="px-5 py-2.5 bg-secondary-container text-on-secondary-container hover:brightness-105 font-bold font-label-md rounded-full flex items-center gap-1.5 transition-all"
             >
               <span className="material-symbols-outlined text-sm">refresh</span> Refresh List
+            </button>
+            <button 
+              onClick={handleLogout}
+              className="px-5 py-2.5 bg-error-container text-on-error-container hover:brightness-105 font-bold font-label-md rounded-full flex items-center gap-1.5 transition-all"
+            >
+              <span className="material-symbols-outlined text-sm">logout</span> Logout
             </button>
           </div>
         </div>
@@ -418,19 +592,25 @@ const AdminPortalPage = () => {
                           <div className="flex gap-2">
                             <button 
                               onClick={() => openEditJobModal(job)}
-                              className="px-3.5 py-1.5 border border-primary text-primary hover:bg-primary-fixed-dim text-xs font-bold rounded-full transition-all"
+                              className="px-3 py-1 border border-primary text-primary hover:bg-primary-fixed-dim text-xs font-bold rounded-full transition-all"
                             >
                               Edit Details
                             </button>
                             <button 
                               onClick={() => handleToggleJobActive(job)}
-                              className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all ${
+                              className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
                                 job.active 
-                                  ? 'border border-error text-error hover:bg-error-container'
+                                  ? 'border border-warning-content text-warning-content hover:bg-amber-100'
                                   : 'bg-primary text-on-primary hover:bg-secondary'
                               }`}
                             >
                               {job.active ? 'Disable' : 'Enable'}
+                            </button>
+                            <button 
+                              onClick={() => handleDeleteJob(job)}
+                              className="px-3 py-1 border border-error text-error hover:bg-error-container text-xs font-bold rounded-full transition-all"
+                            >
+                              Delete
                             </button>
                           </div>
                         </div>
@@ -459,6 +639,8 @@ const AdminPortalPage = () => {
                             <th className="p-4 font-semibold">Subject</th>
                             <th className="p-4 font-semibold">Inquiry Message</th>
                             <th className="p-4 font-semibold">Received Date</th>
+                            <th className="p-4 font-semibold">Status</th>
+                            <th className="p-4 font-semibold text-center">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -468,9 +650,26 @@ const AdminPortalPage = () => {
                                 <div className="font-semibold text-primary">{inq.name}</div>
                                 <div className="text-xs text-on-surface-variant">{inq.email}</div>
                               </td>
-                              <td className="p-4 font-medium text-on-surface w-64">{inq.subject}</td>
-                              <td className="p-4 text-on-surface-variant whitespace-pre-line max-w-lg leading-relaxed">{inq.message}</td>
-                              <td className="p-4 text-on-surface-variant w-36">{new Date(inq.createdAt).toLocaleDateString()}</td>
+                              <td className="p-4 font-medium text-on-surface w-48">{inq.subject}</td>
+                              <td className="p-4 text-on-surface-variant whitespace-pre-line max-w-sm leading-relaxed">{inq.message}</td>
+                              <td className="p-4 text-on-surface-variant w-32">{new Date(inq.createdAt).toLocaleDateString()}</td>
+                              <td className="p-4 w-32">
+                                <span className={`px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider ${
+                                  inq.reviewed ? 'bg-secondary-fixed text-on-secondary-fixed' : 'bg-primary-fixed text-on-primary-fixed'
+                                }`}>
+                                  {inq.reviewed ? 'Reviewed' : 'Pending'}
+                                </span>
+                              </td>
+                              <td className="p-4 text-center w-36">
+                                {!inq.reviewed && (
+                                  <button 
+                                    onClick={() => handleMarkInquiryReviewed(inq._id)}
+                                    className="px-3.5 py-1.5 bg-primary text-on-primary hover:bg-secondary text-xs font-bold rounded-full transition-all"
+                                  >
+                                    Mark Reviewed
+                                  </button>
+                                )}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -513,14 +712,10 @@ const AdminPortalPage = () => {
                   <p className="text-sm font-semibold text-primary">{selectedCandidate.email}</p>
                 </div>
                 <div>
-                  <h5 className="text-xs text-[#707974] font-bold uppercase tracking-wider mb-1">Phone Number</h5>
-                  <p className="text-sm font-semibold text-primary">{selectedCandidate.phone}</p>
-                </div>
-                <div className="mt-2">
                   <h5 className="text-xs text-[#707974] font-bold uppercase tracking-wider mb-1">Current Location</h5>
-                  <p className="text-sm text-on-surface">{selectedCandidate.location}</p>
+                  <p className="text-sm text-on-surface font-semibold text-primary">{selectedCandidate.location}</p>
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 col-span-2">
                   <h5 className="text-xs text-[#707974] font-bold uppercase tracking-wider mb-1">Submitted Date</h5>
                   <p className="text-sm text-on-surface">{new Date(selectedCandidate.createdAt).toLocaleString()}</p>
                 </div>
@@ -547,18 +742,30 @@ const AdminPortalPage = () => {
                 </div>
               </div>
 
-              {/* LinkedIn & CV Links */}
+              {/* CV Links */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-outline-variant pb-6">
                 <div>
-                  <h5 className="text-xs text-[#707974] font-bold uppercase tracking-wider mb-2">Resume Attachment</h5>
-                  <a 
-                    href={selectedCandidate.resumeUrl} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-secondary text-on-secondary font-bold text-xs rounded-full hover:brightness-105 transition-all"
-                  >
-                    <span className="material-symbols-outlined text-sm">download_for_offline</span> View CV / Resume
-                  </a>
+                  <h5 className="text-xs text-[#707974] font-bold uppercase tracking-wider mb-2">Resume File</h5>
+                  <p className="text-xs text-on-surface-variant mb-2 truncate font-mono">{selectedCandidate.resumeFilename || 'resume.pdf'}</p>
+                  <div className="flex gap-2">
+                    <a 
+                      href={selectedCandidate.resumeUrl} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-full hover:brightness-105 transition-all"
+                    >
+                      <span className="material-symbols-outlined text-sm">open_in_new</span> Open
+                    </a>
+                    <a 
+                      href={selectedCandidate.resumeUrl} 
+                      download={selectedCandidate.resumeFilename || "resume.pdf"}
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-secondary text-on-secondary font-bold text-xs rounded-full hover:brightness-105 transition-all"
+                    >
+                      <span className="material-symbols-outlined text-sm">download</span> Download
+                    </a>
+                  </div>
                 </div>
                 {selectedCandidate.linkedin && (
                   <div>
@@ -648,7 +855,7 @@ const AdminPortalPage = () => {
                       type="text" 
                       id="company" 
                       required
-                      placeholder="e.g. Starline Tech"
+                      placeholder="e.g. IT Industry"
                       className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-on-surface focus:outline-none focus:border-secondary text-sm"
                       value={jobForm.company}
                       onChange={handleJobFormChange}
@@ -663,7 +870,7 @@ const AdminPortalPage = () => {
                       type="text" 
                       id="location" 
                       required
-                      placeholder="e.g. Berlin, Germany"
+                      placeholder="e.g. Lucknow, Uttar Pradesh"
                       className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2.5 text-on-surface focus:outline-none focus:border-secondary text-sm"
                       value={jobForm.location}
                       onChange={handleJobFormChange}
@@ -725,7 +932,7 @@ const AdminPortalPage = () => {
                   <textarea 
                     id="benefits" 
                     rows="2"
-                    placeholder="e.g. Flexible hybrid schedule, Unlimited PTO, €5,000 annual education budget"
+                    placeholder="e.g. Flexible hybrid schedule, Unlimited PTO, ₹5,00,000 education budget"
                     className="w-full bg-surface-container border border-outline-variant rounded-xl px-4 py-2 text-on-surface focus:outline-none focus:border-secondary text-sm"
                     value={jobForm.benefits}
                     onChange={handleJobFormChange}

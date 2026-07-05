@@ -7,6 +7,7 @@ import connectDB from './config/db.js';
 import jobRoutes from './routes/jobRoutes.js';
 import candidateRoutes from './routes/candidateRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 // Load environmental variables
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API Endpoints
+app.use('/api/admin', adminRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/candidates', candidateRoutes);
 app.use('/api/contact', contactRoutes);

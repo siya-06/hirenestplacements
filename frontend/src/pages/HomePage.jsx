@@ -13,8 +13,8 @@ const HomePage = () => {
     {
       _id: 'fb1',
       title: 'Senior Software Architect',
-      company: 'Starline Tech',
-      location: 'Berlin, Germany',
+      company: 'IT Industry',
+      location: 'Lucknow, Uttar Pradesh',
       experience: '8+ Years',
       description: 'Lead design of enterprise cloud architectures.',
       type: 'FULL TIME'
@@ -22,8 +22,8 @@ const HomePage = () => {
     {
       _id: 'fb2',
       title: 'VP of Talent Operations',
-      company: 'Red Rock Solutions',
-      location: 'San Francisco, USA',
+      company: 'Logistics Sector',
+      location: 'Ahmedabad, Gujarat',
       experience: '10+ Years',
       description: 'Oversee and design talent sourcing strategies.',
       type: 'REMOTE'
@@ -31,8 +31,8 @@ const HomePage = () => {
     {
       _id: 'fb3',
       title: 'Creative Director',
-      company: 'Bluefin Studio',
-      location: 'London, UK',
+      company: 'Finance & Insurance',
+      location: 'Lucknow, Uttar Pradesh',
       experience: '6+ Years',
       description: 'Lead design directives across marketing and product lines.',
       type: 'CONTRACT'
@@ -80,7 +80,7 @@ const HomePage = () => {
           <div className="bg-primary-container p-12 lg:p-16 flex flex-col justify-center rounded-[24px] text-on-primary relative overflow-hidden">
             <div className="relative z-10">
               <div className="font-indicator text-indicator uppercase tracking-widest mb-6 opacity-80 flex items-center">
-                <span className="mr-2">❖</span> We Help You Find Skilled Talent
+                <span className="mr-2">❖</span> Reach Beyond The Limits
               </div>
               <h1 className="font-display-hero text-display-hero mb-8 leading-tight">
                 Your Next Career Move Starts Here
@@ -105,13 +105,17 @@ const HomePage = () => {
 
       {/* Partner Logos Horizontal Bar */}
       <section className="bg-surface-container-low py-12 border-y border-outline-variant">
-        <div className="max-w-container-max mx-auto px-8 overflow-hidden">
-          <div className="flex items-center justify-between gap-12 opacity-50 grayscale hover:grayscale-0 transition-all flex-wrap md:flex-nowrap">
-            <span className="font-headline-sm text-headline-sm font-bold flex items-center gap-2"><span className="material-symbols-outlined">corporate_fare</span> STARLINE</span>
-            <span className="font-headline-sm text-headline-sm font-bold flex items-center gap-2"><span className="material-symbols-outlined">terrain</span> RED ROCK</span>
-            <span className="font-headline-sm text-headline-sm font-bold flex items-center gap-2"><span className="material-symbols-outlined">diamond</span> KOPEX</span>
-            <span className="font-headline-sm text-headline-sm font-bold flex items-center gap-2"><span className="material-symbols-outlined">water_drop</span> BLUEFIN</span>
-            <span className="font-headline-sm text-headline-sm font-bold flex items-center gap-2"><span className="material-symbols-outlined">account_balance</span> RENCENT</span>
+        <div className="max-w-container-max mx-auto px-8">
+          <div className="text-center mb-8">
+            <h3 className="font-label-md text-label-md text-secondary uppercase tracking-widest font-bold">Key Sectors & Industries Served</h3>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 text-center">
+            <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">computer</span> IT Industry</span>
+            <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">engineering</span> Construction</span>
+            <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">water_drop</span> Water Treatment</span>
+            <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">account_balance</span> Finance & Ins.</span>
+            <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">local_shipping</span> Logistics</span>
+            <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">domain</span> Real Estate</span>
           </div>
         </div>
       </section>
@@ -286,8 +290,8 @@ const HomePage = () => {
               <div className="flex gap-6">
                 <div className="flex-shrink-0 w-12 h-12 rounded-full border-2 border-secondary flex items-center justify-center text-secondary">❖</div>
                 <div>
-                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Global Reach</h4>
-                  <p className="text-on-surface-variant font-body-md">Headquartered in London with partners in NYC, Berlin, and Singapore, we source talent across borders effortlessly.</p>
+                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Industrial Hubs</h4>
+                  <p className="text-on-surface-variant font-body-md">Operating from Lucknow and Ahmedabad, we connect top industrial leadership with elite opportunities across key sectors.</p>
                 </div>
               </div>
             </div>
@@ -316,7 +320,7 @@ const HomePage = () => {
                 </div>
                 <div>
                   <div className="font-headline-sm text-headline-sm leading-tight">Sarah Jenkins</div>
-                  <div className="text-secondary-container font-label-md">CTO at Starline Tech</div>
+                  <div className="text-secondary-container font-label-md">CTO, IT Enterprise</div>
                 </div>
               </div>
             </div>
@@ -333,7 +337,7 @@ const HomePage = () => {
                 </div>
                 <div>
                   <div className="font-headline-sm text-headline-sm leading-tight">Marcus Thorne</div>
-                  <div className="text-secondary-container font-label-md">Chief Operations Officer</div>
+                  <div className="text-secondary-container font-label-md">COO, Logistics Group</div>
                 </div>
               </div>
             </div>

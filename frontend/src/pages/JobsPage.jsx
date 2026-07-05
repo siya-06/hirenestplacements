@@ -19,8 +19,8 @@ const JobsPage = () => {
     {
       _id: 'fb1',
       title: 'Senior Software Architect',
-      company: 'Starline Tech',
-      location: 'Berlin, Germany',
+      company: 'IT Industry',
+      location: 'Lucknow, Uttar Pradesh',
       experience: '8+ Years',
       description: 'Lead design of enterprise cloud architectures. Define software structures, choose tech stacks, and align development teams across global initiatives.',
       active: true
@@ -28,8 +28,8 @@ const JobsPage = () => {
     {
       _id: 'fb2',
       title: 'VP of Talent Operations',
-      company: 'Red Rock Solutions',
-      location: 'San Francisco, USA',
+      company: 'Logistics Sector',
+      location: 'Ahmedabad, Gujarat',
       experience: '10+ Years',
       description: 'Oversee and design talent sourcing strategies. Scale recruiting teams, implement automation tooling, and improve employee retention across borders.',
       active: true
@@ -37,8 +37,8 @@ const JobsPage = () => {
     {
       _id: 'fb3',
       title: 'Creative Director',
-      company: 'Bluefin Studio',
-      location: 'London, UK',
+      company: 'Finance & Insurance',
+      location: 'Lucknow, Uttar Pradesh',
       experience: '6+ Years',
       description: 'Lead design directives across marketing and product lines. Coordinate design systems, branding portfolios, and orchestrate compelling media operations.',
       active: true

@@ -21,8 +21,9 @@ const Header = () => {
   return (
     <header class="bg-surface sticky top-0 z-50 border-b border-outline-variant">
       <div class="flex justify-between items-center h-20 px-8 max-w-container-max mx-auto">
-        <Link to="/" class="font-headline-md text-headline-md font-bold text-primary hover:opacity-90">
-          HireNest Placements
+        <Link to="/" class="flex items-center gap-3 font-headline-md text-headline-md font-bold text-primary hover:opacity-90">
+          <img src="/logo.jpg" alt="HireNest Placements Logo" className="h-10 w-10 object-cover rounded-lg shadow-sm" />
+          <span>HireNest Placements</span>
         </Link>
         
         {/* Desktop Nav */}

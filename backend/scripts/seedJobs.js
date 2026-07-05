@@ -8,8 +8,8 @@ dotenv.config();
 const sampleJobs = [
   {
     title: 'Senior Software Architect',
-    company: 'Starline Tech',
-    location: 'Berlin, Germany',
+    company: 'IT Industry',
+    location: 'Lucknow, Uttar Pradesh',
     experience: '8+ Years',
     description: 'Lead the design of complex enterprise architectures, driving standard practices and aligning development teams. Requires deep knowledge of distributed systems, cloud design patterns, and high-performance applications.',
     requirements: [
@@ -28,14 +28,14 @@ const sampleJobs = [
       'Highly competitive equity package',
       'Generous remote stipend for home equipment',
       'Comprehensive corporate private medical care',
-      'Annual personal educational budget of €5,000'
+      'Annual personal educational budget of ₹5,00,000'
     ],
     active: true
   },
   {
     title: 'VP of Talent Operations',
-    company: 'Red Rock Solutions',
-    location: 'San Francisco, USA (Remote)',
+    company: 'Logistics Sector',
+    location: 'Ahmedabad, Gujarat',
     experience: '10+ Years',
     description: 'Oversee and design talent sourcing, recruiter alignment, and retention strategies. Perfect for a senior professional looking to scaling recruitment teams and implement state-of-the-art hiring workflows.',
     requirements: [
@@ -54,14 +54,14 @@ const sampleJobs = [
       'Executive bonus structure (up to 30% of base)',
       'Unlimited Paid Time Off (PTO)',
       'Fully comprehensive healthcare coverage',
-      'Global offices access (NYC, SF, London)'
+      'Corporate office access in major hubs'
     ],
     active: true
   },
   {
     title: 'Creative Director',
-    company: 'Bluefin Studio',
-    location: 'London, UK (Contract)',
+    company: 'Finance & Insurance',
+    location: 'Lucknow, Uttar Pradesh',
     experience: '6+ Years',
     description: 'Lead design directives across marketing and product design. Work with key project leads to develop visual brand guidelines, manage content outputs, and orchestrate compelling visual strategies.',
     requirements: [
@@ -77,10 +77,10 @@ const sampleJobs = [
       'Manage visual consistency across web, print, and video assets'
     ],
     benefits: [
-      'Competitive day rate contract structure',
+      'Competitive contract structure',
       'Flexible hybrid schedule (1 day/week office standard)',
       'High-end corporate hardware setup (MacBook Pro + Studio Display)',
-      'Invitation to global design networking events'
+      'Invitation to design networking events'
     ],
     active: true
   }

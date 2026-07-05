@@ -67,8 +67,8 @@ export const createCandidate = async (req, res) => {
       positionApplied,
     } = req.body;
 
-    // Validate text inputs
-    if (!fullName || !email || !phone || !location || !qualification || !experience || !skills || !positionApplied) {
+    // Validate text inputs (phone is optional)
+    if (!fullName || !email || !location || !qualification || !experience || !skills || !positionApplied) {
       return res.status(400).json({ message: 'All required fields must be filled.' });
     }
 
@@ -122,7 +122,7 @@ export const createCandidate = async (req, res) => {
     const candidate = new Candidate({
       fullName,
       email: email.toLowerCase(),
-      phone,
+      phone: phone || '',
       location,
       qualification,
       experience: Number(experience),
@@ -130,6 +130,7 @@ export const createCandidate = async (req, res) => {
       linkedin,
       positionApplied,
       resumeUrl,
+      resumeFilename: req.file.originalname,
       status: 'New' // Explicitly set starting status
     });
 

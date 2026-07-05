@@ -1,9 +1,11 @@
 import express from 'express';
-import { createContact, getContacts } from '../controllers/contactController.js';
+import { createContact, getContacts, updateContactReviewed } from '../controllers/contactController.js';
+import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.post('/', createContact);
-router.get('/', getContacts);
+router.get('/', protect, getContacts);
+router.patch('/:id/reviewed', protect, updateContactReviewed);
 
 export default router;

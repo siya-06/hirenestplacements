@@ -11,7 +11,6 @@ const candidateSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    required: true,
   },
   location: {
     type: String,
@@ -39,6 +38,9 @@ const candidateSchema = new mongoose.Schema({
   resumeUrl: {
     type: String,
     required: true,
+  },
+  resumeFilename: {
+    type: String,
   },
   status: {
     type: String,
