@@ -47,9 +47,33 @@ app.get('/api/test-email', async (req, res) => {
     });
 
     await transporter.verify();
-    res.status(200).json({ success: true, message: 'SMTP connection verified successfully.' });
+
+    const companyEmail = process.env.COMPANY_EMAIL || 'info@hirenestplacement.com';
+    const info = await transporter.sendMail({
+      from: `"HireNest Diagnostics" <${process.env.SMTP_USER}>`,
+      to: companyEmail,
+      subject: 'HireNest Placements SMTP Test Email',
+      text: 'This is a real diagnostics test email sent to verify SMTP setup.',
+      html: '<p>This is a real diagnostics test email sent to verify SMTP setup.</p>',
+    });
+
+    console.log('Test Email Send Results:', {
+      messageId: info.messageId,
+      accepted: info.accepted,
+      rejected: info.rejected,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'SMTP connection verified and test email sent successfully.',
+      details: {
+        messageId: info.messageId,
+        accepted: info.accepted,
+        rejected: info.rejected,
+      }
+    });
   } catch (error) {
-    console.error('SMTP Verification failed:', error.message);
+    console.error('SMTP diagnostics failed:', error.message);
     res.status(500).json({ success: false, error: error.message });
   }
 });
