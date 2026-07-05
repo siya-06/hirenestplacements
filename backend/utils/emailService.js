@@ -1,4 +1,7 @@
 import nodemailer from 'nodemailer';
+import dns from 'dns';
+
+dns.setDefaultResultOrder('ipv4first');
 
 // Check if SMTP environment variables are configured
 const isSmtpConfigured = () => {
@@ -21,6 +24,7 @@ const getTransporter = () => {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
+    family: 4,
     connectionTimeout: 30000,
     greetingTimeout: 30000,
     socketTimeout: 30000,
@@ -40,6 +44,15 @@ export const sendEmail = async ({ to, subject, html, text }) => {
   }
 
   try {
+    console.log('====================================');
+    console.log('SMTP SEND ATTEMPT');
+    console.log('To:', to);
+    console.log('Subject:', subject);
+    console.log('Host:', process.env.SMTP_HOST);
+    console.log('Port:', process.env.SMTP_PORT);
+    console.log('User:', process.env.SMTP_USER);
+    console.log('====================================');
+
     const transporter = getTransporter();
     const info = await transporter.sendMail({
       from: `"HireNest Placements" <${process.env.SMTP_USER}>`,
@@ -48,10 +61,16 @@ export const sendEmail = async ({ to, subject, html, text }) => {
       text,
       html,
     });
-    console.log(`Email dispatched successfully. Message ID: ${info.messageId}`);
+
+    console.log('EMAIL SENT SUCCESSFULLY');
+    console.log('Message ID:', info.messageId);
+    console.log('Accepted:', info.accepted);
+    console.log('Rejected:', info.rejected);
+
     return info;
   } catch (error) {
-    console.error(`Email dispatch exception: ${error.message}`);
+    console.error('EMAIL SEND FAILED');
+    console.error(error);
     // We return the error rather than throwing to avoid blocking form submissions
     return { error: error.message };
   }
