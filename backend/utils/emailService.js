@@ -78,6 +78,7 @@ export const sendEmail = async ({ to, subject, html, text }) => {
 
 // @desc Send confirmation notification to applicant candidate
 export const sendCandidateConfirmation = async (candidateEmail, candidateName, positionApplied) => {
+  console.log(`[sendCandidateConfirmation] Recipient Email: ${candidateEmail}`);
   const subject = `Application Received - ${positionApplied} - HireNest Placements`;
   const text = `Dear ${candidateName},\n\nThank you for submitting your resume for the "${positionApplied}" role at HireNest Placements. Our executive consultancy team will review your profile against the position mandates.\n\nWe will reach out to you directly if there is a match.\n\nBest regards,\nHireNest Placements Team`;
   const html = `
@@ -93,7 +94,8 @@ export const sendCandidateConfirmation = async (candidateEmail, candidateName, p
 
 // @desc Send new candidate notification alert to the company inbox
 export const sendCompanyCandidateNotification = async (candidate, positionApplied) => {
-  const companyEmail = process.env.COMPANY_EMAIL || 'info@hirenest.com';
+  const companyEmail = process.env.COMPANY_EMAIL || 'info@hirenestplacement.com';
+  console.log(`[sendCompanyCandidateNotification] Recipient Email: ${companyEmail}`);
   const subject = `New Candidate Application - ${positionApplied}`;
   const text = `A new resume application has been submitted:\n\nCandidate Name: ${candidate.fullName}\nEmail Address: ${candidate.email}\nPosition Applied: ${positionApplied}\nLocation: ${candidate.location}\nYears of Experience: ${candidate.experience}\nHighest Qualification: ${candidate.qualification}\nSkills: ${candidate.skills.join(', ')}\nLinkedIn: ${candidate.linkedin || 'N/A'}\nResume Download URL: ${candidate.resumeUrl}`;
   const html = `
@@ -113,7 +115,8 @@ export const sendCompanyCandidateNotification = async (candidate, positionApplie
 
 // @desc Send contact form inquiry alert to the company inbox
 export const sendCompanyContactNotification = async (contact) => {
-  const companyEmail = process.env.COMPANY_EMAIL || 'info@hirenest.com';
+  const companyEmail = process.env.COMPANY_EMAIL || 'info@hirenestplacement.com';
+  console.log(`[sendCompanyContactNotification] Recipient Email: ${companyEmail}`);
   const subject = 'New Contact Inquiry - HireNest Placements';
   const text = `A new contact message has been submitted:\n\nSender Name: ${contact.name}\nEmail Address: ${contact.email}\nSubject: ${contact.subject}\nMessage Content:\n${contact.message}`;
   const html = `
