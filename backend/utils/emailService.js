@@ -1,44 +1,27 @@
-import nodemailer from 'nodemailer';
-import dns from 'dns';
+// Email delivery via Brevo's HTTP API (https://api.brevo.com) instead of raw SMTP.
+//
+// WHY: Render's free-tier web services block all outbound traffic on SMTP ports
+// 25, 465, and 587 (as of Sept 26, 2025). This has nothing to do with credentials,
+// TLS, or DNS — the TCP connection itself is silently dropped by Render's network
+// layer before Nodemailer ever gets a chance to talk to Hostinger. Switching to an
+// HTTP API means all traffic goes over port 443 (HTTPS), which is never blocked —
+// it's the same port your server already uses for MongoDB Atlas and Cloudinary.
 
-dns.setDefaultResultOrder('ipv4first');
+const BREVO_API_URL = 'https://api.brevo.com/v3/smtp/email';
 
-// Check if SMTP environment variables are configured
-const isSmtpConfigured = () => {
+// Check if Brevo is configured
+const isBrevoConfigured = () => {
   return (
-    process.env.SMTP_HOST &&
-    process.env.SMTP_USER &&
-    process.env.SMTP_PASS &&
-    process.env.SMTP_USER !== 'your_smtp_user' &&
-    process.env.SMTP_USER !== 'dummy_user'
+    process.env.BREVO_API_KEY &&
+    process.env.BREVO_API_KEY !== 'your_brevo_api_key' &&
+    process.env.SENDER_EMAIL &&
+    process.env.SENDER_EMAIL !== 'your_verified_sender_email'
   );
-};
-
-let transporterInstance = null;
-
-// Create Nodemailer Transporter
-const getTransporter = () => {
-  if (!transporterInstance) {
-    console.log('[emailService] Creating a SINGLE shared transporter instance...');
-    transporterInstance = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-      lookup: (hostname, options, callback) => {
-        return dns.lookup(hostname, { family: 4 }, callback);
-      }
-    });
-  }
-  return transporterInstance;
 };
 
 // Main generic email sending routine
 export const sendEmail = async ({ to, subject, html, text }) => {
-  if (!isSmtpConfigured()) {
+  if (!isBrevoConfigured()) {
     console.log('\n==================================================');
     console.log(`[MOCK EMAIL NOTIFICATION LOG]`);
     console.log(`To: ${to}`);
@@ -50,36 +33,47 @@ export const sendEmail = async ({ to, subject, html, text }) => {
 
   try {
     console.log('====================================');
-    console.log('SMTP SEND ATTEMPT');
+    console.log('BREVO API SEND ATTEMPT');
     console.log('To:', to);
     console.log('Subject:', subject);
-    console.log('Host:', process.env.SMTP_HOST);
-    console.log('Port:', process.env.SMTP_PORT);
-    console.log('User:', process.env.SMTP_USER);
+    console.log('Sender:', process.env.SENDER_EMAIL);
     console.log('====================================');
 
-    console.log('[emailService] Fetching transporter...');
-    const transporter = getTransporter();
-
-    console.log('[emailService] Attempting transporter.sendMail()...');
-    const info = await transporter.sendMail({
-      from: `"HireNest Placements" <${process.env.SMTP_USER}>`,
-      to,
-      subject,
-      text,
-      html,
+    const response = await fetch(BREVO_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'api-key': process.env.BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: {
+          name: 'HireNest Placements',
+          email: process.env.SENDER_EMAIL,
+        },
+        to: [{ email: to }],
+        subject,
+        htmlContent: html,
+        textContent: text,
+      }),
     });
 
-    console.log('EMAIL SENT SUCCESSFULLY');
-    console.log('Message ID:', info.messageId);
-    console.log('Accepted:', info.accepted);
-    console.log('Rejected:', info.rejected);
+    const data = await response.json();
 
-    return info;
+    if (!response.ok) {
+      console.error('EMAIL SEND FAILED (Brevo API error)');
+      console.error('Status:', response.status);
+      console.error('Response:', data);
+      return { error: data.message || `Brevo API returned status ${response.status}` };
+    }
+
+    console.log('EMAIL SENT SUCCESSFULLY');
+    console.log('Message ID:', data.messageId);
+
+    return data;
   } catch (error) {
-    console.error('EMAIL SEND FAILED');
+    console.error('EMAIL SEND FAILED (network/unexpected error)');
     console.error(error);
-    // We return the error rather than throwing to avoid blocking form submissions
     return { error: error.message };
   }
 };

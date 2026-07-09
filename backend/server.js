@@ -9,9 +9,7 @@ import candidateRoutes from './routes/candidateRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
-import dns from 'dns';
 
-dns.setDefaultResultOrder('ipv4first');
 
 // Load environmental variables
 dotenv.config();
@@ -55,20 +53,6 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT} in development mode`);
-  
-  if (process.env.SMTP_HOST) {
-    try {
-      const dnsLookup = await dns.promises.lookup(process.env.SMTP_HOST);
-      console.log('==================================================');
-      console.log('SMTP HOST RESOLUTION AT STARTUP:');
-      console.log(`Host: ${process.env.SMTP_HOST}`);
-      console.log(`Resolved IP: ${dnsLookup.address}`);
-      console.log(`Address Family: IPv${dnsLookup.family}`);
-      console.log('==================================================');
-    } catch (err) {
-      console.error('Failed to resolve SMTP host at startup:', err.message);
-    }
-  }
 });
