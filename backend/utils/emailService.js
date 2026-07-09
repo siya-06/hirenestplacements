@@ -20,13 +20,14 @@ const isBrevoConfigured = () => {
 };
 
 // Main generic email sending routine
-export const sendEmail = async ({ to, subject, html, text }) => {
+export const sendEmail = async ({ to, subject, html, text, replyTo, replyToName }) => {
   if (!isBrevoConfigured()) {
     console.log('\n==================================================');
     console.log(`[MOCK EMAIL NOTIFICATION LOG]`);
     console.log(`To: ${to}`);
     console.log(`Subject: ${subject}`);
     console.log(`Body (Text):\n${text}`);
+    if (replyTo) console.log('Reply-To:', replyTo);
     console.log('==================================================\n');
     return { mock: true };
   }
@@ -37,7 +38,23 @@ export const sendEmail = async ({ to, subject, html, text }) => {
     console.log('To:', to);
     console.log('Subject:', subject);
     console.log('Sender:', process.env.SENDER_EMAIL);
+    if (replyTo) console.log('Reply-To:', replyTo);
     console.log('====================================');
+
+    const payload = {
+      sender: {
+        name: 'HireNest Placements',
+        email: process.env.SENDER_EMAIL,
+      },
+      to: [{ email: to }],
+      subject,
+      htmlContent: html,
+      textContent: text,
+    };
+
+    if (replyTo) {
+      payload.replyTo = { email: replyTo, ...(replyToName ? { name: replyToName } : {}) };
+    }
 
     const response = await fetch(BREVO_API_URL, {
       method: 'POST',
@@ -46,16 +63,7 @@ export const sendEmail = async ({ to, subject, html, text }) => {
         Accept: 'application/json',
         'api-key': process.env.BREVO_API_KEY,
       },
-      body: JSON.stringify({
-        sender: {
-          name: 'HireNest Placements',
-          email: process.env.SENDER_EMAIL,
-        },
-        to: [{ email: to }],
-        subject,
-        htmlContent: html,
-        textContent: text,
-      }),
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
@@ -112,7 +120,7 @@ export const sendCompanyCandidateNotification = async (candidate, positionApplie
     <p><strong>LinkedIn Profile:</strong> <a href="${candidate.linkedin}" target="_blank">${candidate.linkedin || 'N/A'}</a></p>
     <p><strong>Resume Attachment:</strong> <a href="${candidate.resumeUrl}" target="_blank">Download/View Resume File</a></p>
   `;
-  return sendEmail({ to: companyEmail, subject, text, html });
+  return sendEmail({ to: companyEmail, subject, text, html, replyTo: candidate.email, replyToName: candidate.fullName });
 };
 
 // @desc Send contact form inquiry alert to the company inbox
@@ -131,5 +139,5 @@ export const sendCompanyContactNotification = async (contact) => {
       ${contact.message}
     </blockquote>
   `;
-  return sendEmail({ to: companyEmail, subject, text, html });
+  return sendEmail({ to: companyEmail, subject, text, html, replyTo: contact.email, replyToName: contact.name });
 };
