@@ -294,6 +294,27 @@ const AdminPortalPage = () => {
     }
   };
 
+  // Handle Candidate Deletion
+  const handleDeleteCandidate = async (candidate) => {
+    if (!window.confirm(`Are you sure you want to permanently delete candidate "${candidate.fullName}"?`)) {
+      return;
+    }
+    try {
+      setErrorMsg('');
+      setActionSuccess('');
+      await axios.delete(`${BACKEND_URL}/candidates/${candidate._id}`, getHeaders());
+      setActionSuccess(`Candidate "${candidate.fullName}" has been deleted successfully.`);
+      setCandidates(prev => prev.filter(c => c._id !== candidate._id));
+      if (selectedCandidate && selectedCandidate._id === candidate._id) {
+        setSelectedCandidate(null);
+      }
+    } catch (err) {
+      console.error(err);
+      if (err.response?.status === 401) handleLogout();
+      setErrorMsg('Failed to delete candidate application.');
+    }
+  };
+
   // Builds an embeddable preview URL for a resume file (PDF, DOC, or DOCX) using
   // Google's Docs Viewer, rendering it inline instead of forcing a download.
   const getResumePreviewUrl = (resumeUrl) => {
@@ -537,12 +558,20 @@ const AdminPortalPage = () => {
                                 </span>
                               </td>
                               <td className="p-4 text-center">
-                                <button 
-                                  onClick={() => setSelectedCandidate(cand)}
-                                  className="px-4 py-1.5 border border-primary text-primary hover:bg-primary-fixed-dim text-xs font-bold rounded-full transition-all"
-                                >
-                                  Open Profile
-                                </button>
+                                <div className="flex justify-center gap-2">
+                                  <button 
+                                    onClick={() => setSelectedCandidate(cand)}
+                                    className="px-4 py-1.5 border border-primary text-primary hover:bg-primary-fixed-dim text-xs font-bold rounded-full transition-all"
+                                  >
+                                    Open Profile
+                                  </button>
+                                  <button 
+                                    onClick={() => handleDeleteCandidate(cand)}
+                                    className="px-4 py-1.5 border border-error text-error hover:bg-error-container text-xs font-bold rounded-full transition-all"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
                               </td>
                             </tr>
                           ))}

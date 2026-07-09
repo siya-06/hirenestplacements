@@ -132,11 +132,7 @@ const ContactPage = () => {
                   <span className="material-symbols-outlined text-[24px]">location_on</span>
                 </div>
                 <div>
-                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Lucknow Office</h4>
-                  <p className="text-on-surface-variant font-body-md leading-relaxed">
-                    Hazratganj, Lucknow,<br />
-                    Uttar Pradesh, India
-                  </p>
+                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Lucknow, UP</h4>
                 </div>
               </div>
 
@@ -145,11 +141,7 @@ const ContactPage = () => {
                   <span className="material-symbols-outlined text-[24px]">location_on</span>
                 </div>
                 <div>
-                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Ahmedabad Office</h4>
-                  <p className="text-on-surface-variant font-body-md leading-relaxed">
-                    CG Road, Ahmedabad,<br />
-                    Gujarat, India
-                  </p>
+                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Ahmedabad, Gujarat</h4>
                 </div>
               </div>
 

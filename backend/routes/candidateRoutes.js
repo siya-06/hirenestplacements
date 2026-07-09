@@ -4,6 +4,7 @@ import {
   getCandidates, 
   getCandidateById, 
   updateCandidateStatus,
+  deleteCandidate,
   upload 
 } from '../controllers/candidateController.js';
 
@@ -18,5 +19,6 @@ router.post('/', upload.single('resume'), createCandidate);
 router.get('/', protect, getCandidates);
 router.get('/:id', protect, getCandidateById);
 router.patch('/:id/status', protect, updateCandidateStatus);
+router.delete('/:id', protect, deleteCandidate);
 
 export default router;

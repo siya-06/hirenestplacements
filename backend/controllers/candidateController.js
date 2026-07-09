@@ -221,3 +221,22 @@ export const updateCandidateStatus = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Delete candidate application
+// @route   DELETE /api/candidates/:id
+// @access  Private/Admin
+export const deleteCandidate = async (req, res) => {
+  try {
+    const candidate = await Candidate.findById(req.params.id);
+    if (!candidate) {
+      return res.status(404).json({ message: 'Candidate application not found.' });
+    }
+    await Candidate.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: 'Candidate application deleted successfully.' });
+  } catch (error) {
+    if (error.kind === 'ObjectId') {
+      return res.status(404).json({ message: 'Candidate application not found.' });
+    }
+    res.status(500).json({ message: error.message });
+  }
+};
