@@ -78,7 +78,7 @@ const HomePage = () => {
           <div className="hero-split-mask w-full lg:w-[45%] min-h-[400px]">
             <img 
               className="w-full h-full object-cover rounded-[24px]" 
-              alt="Professional executives roundtable meeting" 
+              alt="Professional executive typing on laptop with notebook" 
               src="/hero-roundtable.jpg"
             />
           </div>
