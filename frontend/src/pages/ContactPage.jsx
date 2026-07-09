@@ -17,11 +17,11 @@ const ContactPage = () => {
   const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
-    document.title = "Contact Us & Business Inquiries | HireNest Placements";
+    document.title = "Contact Us & Business Inquiries | HIRENEST PLACEMENTS";
     
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', 'Get in touch with the team at HireNest Placements. Reach our business consultants by phone, email, or contact form.');
+      metaDesc.setAttribute('content', 'Get in touch with the team at HIRENEST PLACEMENTS. Reach our business consultants by phone, email, or contact form.');
     }
   }, []);
 
@@ -122,7 +122,7 @@ const ContactPage = () => {
               <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider">❖ Find Us</div>
               <h2 className="font-headline-lg text-headline-lg text-primary mb-6">Our Offices</h2>
               <p className="text-on-surface-variant font-body-md leading-relaxed">
-                HireNest Placements coordinates executive recruitment campaigns from our offices in Uttar Pradesh and Gujarat.
+                HIRENEST PLACEMENTS PRIVATE LIMITED coordinates executive recruitment campaigns from our offices in Uttar Pradesh and Gujarat.
               </p>
             </div>
 

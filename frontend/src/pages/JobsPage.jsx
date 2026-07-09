@@ -46,6 +46,11 @@ const JobsPage = () => {
   ];
 
   useEffect(() => {
+    document.title = "Current Job Openings | HIRENEST PLACEMENTS";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', 'Explore current job openings and career opportunities with HIRENEST PLACEMENTS. Apply online today.');
+    }
     const fetchJobs = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/jobs`);

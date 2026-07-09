@@ -29,12 +29,12 @@ const JobDetailsPage = () => {
 
   useEffect(() => {
     if (job) {
-      document.title = `${job.title} at ${job.company} | HireNest Placements`;
+      document.title = `${job.title} at ${job.company} | HIRENEST PLACEMENTS`;
       
       // Update SEO meta descriptions dynamically
       const descriptionMeta = document.querySelector('meta[name="description"]');
       if (descriptionMeta) {
-        descriptionMeta.setAttribute('content', `Apply for ${job.title} at ${job.company} in ${job.location}. Requirements: ${job.experience} experience. Executive placements by HireNest.`);
+        descriptionMeta.setAttribute('content', `Apply for ${job.title} at ${job.company} in ${job.location}. Requirements: ${job.experience} experience. Executive placements by HIRENEST.`);
       }
     }
   }, [job]);
@@ -199,7 +199,7 @@ const JobDetailsPage = () => {
               </button>
 
               <p className="text-[#707974] text-xs text-center leading-relaxed">
-                By clicking Apply, you agree to our privacy policy and terms. HireNest protects candidate confidentiality absolute.
+                By clicking Apply, you agree to our privacy policy and terms. HIRENEST protects candidate confidentiality absolute.
               </p>
             </div>
           </div>

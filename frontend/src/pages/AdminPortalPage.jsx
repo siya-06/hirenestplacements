@@ -127,7 +127,7 @@ const AdminPortalPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      document.title = "Internal Admin Dashboard | HireNest Placements";
+      document.title = "Internal Admin Dashboard | HIRENEST PLACEMENTS";
       loadData();
     }
   }, [activeTab, isAuthenticated]);
@@ -351,8 +351,8 @@ const AdminPortalPage = () => {
     return (
       <div className="min-h-[80vh] flex items-center justify-center bg-surface-container-lowest px-6 py-12">
         <div className="bg-surface border border-outline-variant p-8 md:p-12 rounded-3xl shadow-xl w-full max-w-md text-center">
-          <img src="/logo.jpg" alt="HireNest Placements Logo" className="h-20 w-20 object-cover rounded-2xl mx-auto mb-6 shadow-md" />
-          <h2 className="font-headline-lg text-headline-lg text-primary mb-2">HireNest Placements</h2>
+          <img src="/logo.jpg" alt="HIRENEST PLACEMENTS Logo" className="h-20 w-20 object-cover rounded-2xl mx-auto mb-6 shadow-md" />
+          <h2 className="font-headline-lg text-headline-lg text-primary mb-2">HIRENEST PLACEMENTS</h2>
           <p className="text-on-surface-variant text-sm mb-8 italic">"Reach Beyond The Limits"</p>
           <h3 className="font-title-medium text-lg font-bold text-on-surface mb-6">Admin Console Login</h3>
           

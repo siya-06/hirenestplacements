@@ -10,24 +10,24 @@ const Header = () => {
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? "font-label-md text-label-md text-primary border-b-2 border-primary pb-1 transition-colors active:scale-95 duration-150"
-      : "font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150";
+      ? "font-label-md text-body-md text-primary border-b-2 border-primary pb-1 transition-colors active:scale-95 duration-150"
+      : "font-label-md text-body-md text-on-surface-variant hover:text-primary transition-colors active:scale-95 duration-150";
 
   const mobileLinkClass = ({ isActive }) =>
     isActive
-      ? "block font-label-md text-label-md text-primary border-l-4 border-primary pl-3 py-2 bg-primary-fixed/20"
-      : "block font-label-md text-label-md text-on-surface-variant hover:text-primary pl-3 py-2";
+      ? "block font-label-md text-body-md text-primary border-l-4 border-primary pl-3 py-2 bg-primary-fixed/20"
+      : "block font-label-md text-body-md text-on-surface-variant hover:text-primary pl-3 py-2";
 
   return (
     <header class="bg-surface sticky top-0 z-50 border-b border-outline-variant">
       <div class="flex justify-between items-center h-20 px-8 max-w-container-max mx-auto">
         <Link to="/" class="flex items-center gap-3 font-headline-md text-headline-md font-bold text-primary hover:opacity-90">
-          <img src="/logo.jpg" alt="HireNest Placements Logo" className="h-10 w-10 object-cover rounded-lg shadow-sm" />
-          <span>HireNest Placements</span>
+          <img src="/logo.jpg" alt="HIRENEST PLACEMENTS Logo" className="h-14 w-auto object-contain rounded-lg shadow-sm" />
+          <span>HIRENEST PLACEMENTS</span>
         </Link>
         
         {/* Desktop Nav */}
-        <nav class="hidden md:flex items-center space-x-8">
+        <nav class="hidden md:flex items-center space-x-10">
           <NavLink to="/" className={linkClass} end>Home</NavLink>
           <NavLink to="/about" className={linkClass}>About Us</NavLink>
           <NavLink to="/jobs" className={linkClass}>Current Openings</NavLink>

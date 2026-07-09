@@ -29,11 +29,11 @@ const SubmitResumePage = () => {
   const [validationErrors, setValidationErrors] = useState({});
 
   useEffect(() => {
-    document.title = "Submit Profile & Resume | HireNest Placements";
+    document.title = "Submit Profile & Resume | HIRENEST PLACEMENTS";
     
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute('content', 'Submit your credentials and CV to HireNest Placements. Let our expert recruiters connect you with premium executive mandates.');
+      metaDesc.setAttribute('content', 'Submit your credentials and CV to HIRENEST PLACEMENTS. Let our expert recruiters connect you with premium executive mandates.');
     }
   }, []);
 

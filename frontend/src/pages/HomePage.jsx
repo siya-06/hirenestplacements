@@ -8,13 +8,14 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openFaq, setOpenFaq] = useState(null);
 
   const fallbackJobs = [
     {
       _id: 'fb1',
       title: 'Senior Software Architect',
       company: 'IT Industry',
-      location: 'Lucknow, Uttar Pradesh',
+      location: 'Lucknow, UP',
       experience: '8+ Years',
       description: 'Lead design of enterprise cloud architectures.',
       type: 'FULL TIME'
@@ -32,7 +33,7 @@ const HomePage = () => {
       _id: 'fb3',
       title: 'Creative Director',
       company: 'Finance & Insurance',
-      location: 'Lucknow, Uttar Pradesh',
+      location: 'Lucknow, UP',
       experience: '6+ Years',
       description: 'Lead design directives across marketing and product lines.',
       type: 'CONTRACT'
@@ -40,6 +41,7 @@ const HomePage = () => {
   ];
 
   useEffect(() => {
+    document.title = "HIRENEST PLACEMENTS | Recruitment Agency & Placement Consultancy in India";
     const fetchJobs = async () => {
       try {
         const response = await axios.get(`${BACKEND_URL}/jobs`);
@@ -63,6 +65,10 @@ const HomePage = () => {
     navigate('/submit-resume', { state: { jobTitle: job.title } });
   };
 
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
   return (
     <div>
       {/* Dual-Panel Split Hero Section */}
@@ -72,25 +78,25 @@ const HomePage = () => {
           <div className="hero-split-mask h-full min-h-[400px]">
             <img 
               className="w-full h-full object-cover" 
-              alt="Professional young male executive focusing on laptop in boardroom" 
+              alt="Professional executives focusing on laptop in boardroom" 
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQLkVr4-aoID7pCg4__jCToIro2v67_X_UVtvyK8NXAj-U3s0G6xL-DpXKCNzPEvPU8EO3gqcncnykehDNulAscP8Gf1PkooSNDwctMA91zwDgmqtbIiRws-u8kbuVTU55HBqMj1OuArCHFWSc3A2nPk-xbW1ZLZ2t89mdvrp1FCVLPxiO2aLcvRXX3SN3_XygEa3jTnu59RnS9Fi-MxHih9S7RVdxwRB5EI67Vs78Fqpnz8Yp2qEVUqKta1JcX8f4HQScBgJ1bg"
             />
           </div>
-          {/* Right Content Panel (Emerald Box) */}
-          <div className="bg-primary-container p-12 lg:p-16 flex flex-col justify-center rounded-[24px] text-on-primary relative overflow-hidden">
+          {/* Right Content Panel */}
+          <div className="bg-primary p-12 lg:p-16 flex flex-col justify-center rounded-[24px] text-on-primary relative overflow-hidden">
             <div className="relative z-10">
               <div className="font-indicator text-indicator uppercase tracking-widest mb-6 opacity-80 flex items-center">
-                <span className="mr-2">❖</span> Reach Beyond The Limits
+                <span className="mr-2">❖</span> Reach Beyond the Limits
               </div>
-              <h1 className="font-display-hero text-display-hero mb-8 leading-tight">
-                Your Next Career Move Starts Here
+              <h1 className="font-display-hero text-[36px] lg:text-display-hero mb-8 leading-tight">
+                India's Next-Generation Recruitment Partner
               </h1>
               <p className="font-body-lg text-body-lg mb-10 text-on-primary-container max-w-lg">
-                Expert-led recruitment strategies for global enterprises and ambitious professionals. We bridge the gap with precision and authority.
+                Finding exceptional talent shouldn't be difficult. At HIRENEST PLACEMENTS PRIVATE LIMITED, we help businesses hire faster, smarter, and more efficiently using AI-assisted sourcing, market intelligence, rigorous candidate screening, and industry-focused recruitment strategies.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/jobs" className="px-8 py-4 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-bold flex items-center gap-2 hover:brightness-105 transition-all">
-                  Browse Jobs <span className="material-symbols-outlined text-[20px]">north_east</span>
+                <Link to="/contact" className="px-8 py-4 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-bold flex items-center gap-2 hover:brightness-105 transition-all">
+                  Hire Talent <span className="material-symbols-outlined text-[20px]">north_east</span>
                 </Link>
                 <Link to="/submit-resume" className="px-8 py-4 rounded-full border border-on-primary-container text-on-primary font-label-md hover:bg-white/10 transition-all text-center">
                   Submit Resume
@@ -124,71 +130,71 @@ const HomePage = () => {
       <section className="py-section-padding bg-background px-8 max-w-container-max mx-auto">
         <div className="text-center mb-16">
           <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider flex justify-center items-center">
-            <span className="mr-2">❖</span> Our Global Impact
+            <span className="mr-2">❖</span> Our Impact
           </div>
           <h2 className="font-headline-lg text-headline-lg text-primary">Measured in Results, Built on Trust</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
-          <div className="bg-surface-container-lowest p-10 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-transform group">
-            <div className="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>groups</span>
-            </div>
-            <div className="text-[32px] font-bold text-primary mb-1">5000+</div>
-            <p className="text-on-surface-variant font-label-md">Candidates Placed</p>
-          </div>
-          <div className="bg-surface-container-lowest p-10 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-transform group">
-            <div className="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
+          <div className="bg-surface p-10 rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform group">
+            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>handshake</span>
             </div>
-            <div className="text-[32px] font-bold text-primary mb-1">300+</div>
+            <div className="text-[32px] font-bold text-primary mb-1">150+</div>
             <p className="text-on-surface-variant font-label-md">Hiring Partners</p>
           </div>
-          <div className="bg-surface-container-lowest p-10 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-transform group">
-            <div className="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>work_history</span>
+          <div className="bg-surface p-10 rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform group">
+            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>domain</span>
             </div>
-            <div className="text-[32px] font-bold text-primary mb-1">1000+</div>
-            <p className="text-on-surface-variant font-label-md">Open Positions</p>
+            <div className="text-[32px] font-bold text-primary mb-1">25+</div>
+            <p className="text-on-surface-variant font-label-md">Industry Domains</p>
           </div>
-          <div className="bg-surface-container-lowest p-10 rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-transform group">
-            <div className="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
+          <div className="bg-surface p-10 rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform group">
+            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>groups</span>
             </div>
-            <div className="text-[32px] font-bold text-primary mb-1">95%</div>
-            <p className="text-on-surface-variant font-label-md">Client Satisfaction</p>
+            <div className="text-[32px] font-bold text-primary mb-1">750+</div>
+            <p className="text-on-surface-variant font-label-md">Successful Placements</p>
+          </div>
+          <div className="bg-surface p-10 rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform group">
+            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>public</span>
+            </div>
+            <div className="text-[32px] font-bold text-primary mb-1">PAN India</div>
+            <p className="text-on-surface-variant font-label-md">Recruitment Network</p>
           </div>
         </div>
       </section>
 
       {/* Services Overview */}
-      <section className="py-section-padding bg-surface-container-low px-8">
+      <section className="py-section-padding bg-surface-container-low px-8 border-y border-outline-variant">
         <div className="max-w-container-max mx-auto">
           <div className="flex flex-col lg:flex-row justify-between items-end gap-stack-lg mb-16">
             <div className="max-w-2xl">
               <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider">❖ Comprehensive Solutions</div>
-              <h2 className="font-headline-lg text-headline-lg text-primary mb-6">Expertise Across the Lifecycle</h2>
-              <p className="font-body-lg text-body-lg text-on-surface-variant">We provide a structured approach to talent acquisition, ensuring every placement aligns with corporate culture and long-term goals.</p>
+              <h2 className="font-headline-lg text-headline-lg text-primary mb-6">Talent Acquisition & Professional Staffing Services</h2>
+              <p className="font-body-lg text-body-lg text-on-surface-variant">We provide a structured approach to recruitment, ensuring every placement aligns with corporate culture and long-term business goals.</p>
             </div>
             <Link to="/about" className="px-8 py-3 rounded-full border-2 border-primary text-primary font-bold hover:bg-primary hover:text-on-primary transition-all text-center">View Our Story</Link>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="bg-surface-container-lowest p-8 rounded-xl border border-transparent hover:border-secondary transition-all group">
+            <div className="bg-surface p-8 rounded-xl border border-outline-variant hover:border-secondary transition-all group">
               <h3 className="font-headline-md text-headline-md text-primary mb-4">Executive Search</h3>
               <p className="text-on-surface-variant mb-8 font-body-md">Sourcing C-suite and senior leadership through precision-driven networking and rigorous assessment.</p>
               <div className="h-1 bg-surface-variant rounded-full overflow-hidden">
                 <div className="h-full bg-secondary w-1/3 group-hover:w-full transition-all duration-500"></div>
               </div>
             </div>
-            <div className="bg-surface-container-lowest p-8 rounded-xl border border-transparent hover:border-secondary transition-all group">
-              <h3 className="font-headline-md text-headline-md text-primary mb-4">Tech Recruitment</h3>
-              <p className="text-on-surface-variant mb-8 font-body-md">Placing developers, architects, and product leads who drive innovation in rapidly scaling environments.</p>
+            <div className="bg-surface p-8 rounded-xl border border-outline-variant hover:border-secondary transition-all group">
+              <h3 className="font-headline-md text-headline-md text-primary mb-4">Permanent Staffing</h3>
+              <p className="text-on-surface-variant mb-8 font-body-md">Connecting organizations with high-performing professionals for critical permanent roles.</p>
               <div className="h-1 bg-surface-variant rounded-full overflow-hidden">
                 <div className="h-full bg-secondary w-1/2 group-hover:w-full transition-all duration-500"></div>
               </div>
             </div>
-            <div className="bg-surface-container-lowest p-8 rounded-xl border border-transparent hover:border-secondary transition-all group">
-              <h3 className="font-headline-md text-headline-md text-primary mb-4">Consulting Services</h3>
-              <p className="text-on-surface-variant mb-8 font-body-md">Advisory on talent strategy, employee branding, and performance-based compensation modeling.</p>
+            <div className="bg-surface p-8 rounded-xl border border-outline-variant hover:border-secondary transition-all group">
+              <h3 className="font-headline-md text-headline-md text-primary mb-4">Bulk Hiring</h3>
+              <p className="text-on-surface-variant mb-8 font-body-md">Managing high-volume operational recruitment campaigns with speed, reliability, and precision.</p>
               <div className="h-1 bg-surface-variant rounded-full overflow-hidden">
                 <div className="h-full bg-secondary w-1/4 group-hover:w-full transition-all duration-500"></div>
               </div>
@@ -197,10 +203,42 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Our Recruitment Process */}
+      <section className="py-section-padding bg-background px-8 border-b border-outline-variant">
+        <div className="max-w-container-max mx-auto">
+          <div className="text-center mb-16">
+            <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider">❖ Structured Search Methodology</div>
+            <h2 className="font-headline-lg text-headline-lg text-primary">Our Recruitment Process</h2>
+            <p className="text-on-surface-variant font-body-md mt-2 max-w-2xl mx-auto">
+              We follow a rigorous, step-by-step process to ensure candidate quality, speed of delivery, and strategic operational alignment.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6 text-center">
+            {[
+              { title: 'Understand Requirements', icon: 'psychology' },
+              { title: 'Source Talent', icon: 'hub' },
+              { title: 'Screen Candidates', icon: 'pageview' },
+              { title: 'Assess Skills', icon: 'assignment_turned_in' },
+              { title: 'Shortlist', icon: 'format_list_bulleted' },
+              { title: 'Interview Coordination', icon: 'calendar_today' },
+              { title: 'Selection', icon: 'verified' },
+              { title: 'Joining Support', icon: 'handshake' }
+            ].map((step, idx) => (
+              <div key={idx} className="bg-surface p-6 rounded-2xl border border-outline-variant flex flex-col items-center justify-center shadow-sm hover:border-secondary transition-all">
+                <div className="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center text-primary mb-4 shrink-0 font-bold">
+                  <span className="material-symbols-outlined text-2xl">{step.icon}</span>
+                </div>
+                <h4 className="font-semibold text-xs text-primary leading-tight">{step.title}</h4>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Job Openings */}
       <section className="py-section-padding bg-background px-8 max-w-container-max mx-auto">
         <div className="flex justify-between items-center mb-12">
-          <h2 className="font-headline-lg text-headline-lg text-primary">Featured Opportunities</h2>
+          <h2 className="font-headline-lg text-headline-lg text-primary">Featured Mandates</h2>
           <Link to="/jobs" className="text-secondary font-bold hover:underline flex items-center gap-1 font-label-md">
             View All Openings <span className="material-symbols-outlined text-[18px]">arrow_right_alt</span>
           </Link>
@@ -251,96 +289,188 @@ const HomePage = () => {
         )}
       </section>
 
-      {/* Why Choose Us (Asymmetric Split) */}
-      <section className="py-section-padding px-8 max-w-container-max mx-auto overflow-hidden">
-        <div className="flex flex-col lg:flex-row items-center gap-20">
-          <div className="lg:w-1/2 relative">
-            <div className="absolute -top-10 -left-10 w-40 h-40 bg-secondary-fixed opacity-20 rounded-full blur-3xl"></div>
-            <div className="rounded-3xl overflow-hidden shadow-2xl relative z-10">
-              <img 
-                className="w-full h-full object-cover aspect-[4/5]" 
-                alt="Diverse team of professional recruiters collaborating" 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxfuRf8OrUspvrLVNwVBtI5OwXVC9jSmbsEoXPf39jKQlPML1NnuEQJj2Cefuj6YfT_KD2CSCqYIFOHDxzFh5FLDTfwaa7CazyumRyAK2-gjwS7e-_ikD5sBpGsW2lba7qZBf78qlQq-yienTbOs2ZPYarSH2X1F1mhzvcCwzbmlnQOp4xi379_qgdlDYSyqrO1T7DYO5C5Ph9WuOTItT-UeoqWADD8GfkL2e-e_tUWa6BN63qaGOCalzwP0UE1hfC5Aoft-bu1g"
-              />
-            </div>
-            {/* Overlapping Card */}
-            <div className="absolute -bottom-10 -right-10 bg-tertiary p-8 rounded-2xl text-on-tertiary max-w-[280px] hidden md:block shadow-xl z-20">
-              <div className="font-headline-sm text-headline-sm mb-2">95% Success</div>
-              <p className="text-on-tertiary-container font-body-md italic">"Our methodology ensures that 95% of our candidates stay with their new company for over 2 years."</p>
-            </div>
+      {/* Industries Section */}
+      <section className="py-section-padding bg-surface-container-low px-8 border-y border-outline-variant">
+        <div className="max-w-container-max mx-auto">
+          <div className="text-center mb-16">
+            <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider">❖ Domains of Expertise</div>
+            <h2 className="font-headline-lg text-headline-lg text-primary">Industries We Serve</h2>
+            <p className="text-on-surface-variant font-body-md mt-2 max-w-2xl mx-auto">
+              Our specialist recruitment consultants partner with organizations across key sectors, matching critical talent to industry-specific mandates.
+            </p>
           </div>
-          <div className="lg:w-1/2">
-            <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider">❖ The HireNest Difference</div>
-            <h2 className="font-headline-lg text-headline-lg text-primary mb-8">Why Industry Leaders Choose Our Partnership</h2>
-            <div className="space-y-8">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full border-2 border-secondary flex items-center justify-center text-secondary">❖</div>
-                <div>
-                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Authority & Trust</h4>
-                  <p className="text-on-surface-variant font-body-md">With over a decade of executive recruitment, we have built a network that is inaccessible to standard platforms.</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[
+              { title: 'Information Technology', icon: 'computer' },
+              { title: 'Logistics', icon: 'local_shipping' },
+              { title: 'Supply Chain', icon: 'inventory_2' },
+              { title: 'Manufacturing', icon: 'precision_manufacturing' },
+              { title: 'Engineering', icon: 'build' },
+              { title: 'Healthcare', icon: 'medical_services' },
+              { title: 'Pharmaceuticals', icon: 'vaccines' },
+              { title: 'BFSI', icon: 'account_balance' },
+              { title: 'Retail', icon: 'storefront' },
+              { title: 'E-Commerce', icon: 'shopping_bag' },
+              { title: 'Sales', icon: 'trending_up' },
+              { title: 'Marketing', icon: 'campaign' },
+              { title: 'Human Resources', icon: 'badge' },
+              { title: 'Administration', icon: 'admin_panel_settings' },
+              { title: 'Startups', icon: 'rocket_launch' },
+              { title: 'MSMEs', icon: 'business' },
+              { title: 'Large Enterprises', icon: 'corporate_fare' }
+            ].map((ind, idx) => (
+              <div key={idx} className="bg-surface p-6 rounded-2xl border border-outline-variant flex items-center gap-4 hover:shadow-md hover:border-secondary transition-all">
+                <div className="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center text-primary shrink-0">
+                  <span className="material-symbols-outlined text-[24px]">{ind.icon}</span>
                 </div>
+                <h4 className="font-headline-sm text-sm font-bold text-primary">{ind.title}</h4>
               </div>
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full border-2 border-secondary flex items-center justify-center text-secondary">❖</div>
-                <div>
-                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Precision Vetting</h4>
-                  <p className="text-on-surface-variant font-body-md">Our multi-stage assessment includes cultural alignment, technical proficiency, and leadership potential analysis.</p>
-                </div>
-              </div>
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full border-2 border-secondary flex items-center justify-center text-secondary">❖</div>
-                <div>
-                  <h4 className="font-headline-sm text-headline-sm text-primary mb-2">Industrial Hubs</h4>
-                  <p className="text-on-surface-variant font-body-md">Operating from Lucknow and Ahmedabad, we connect top industrial leadership with elite opportunities across key sectors.</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonial Carousel */}
-      <section className="py-section-padding bg-primary-container text-on-primary">
-        <div className="max-w-container-max mx-auto px-8">
-          <div className="text-center mb-16">
-            <div className="font-indicator text-indicator uppercase mb-4 tracking-widest opacity-70">❖ Success Stories</div>
-            <h2 className="font-headline-lg text-headline-lg">Voices from Our Network</h2>
+      {/* Why Choose HIRENEST (Asymmetric Split) */}
+      <section className="py-section-padding px-8 max-w-container-max mx-auto overflow-hidden">
+        <div className="text-center mb-16">
+          <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider">❖ The HIRENEST Advantage</div>
+          <h2 className="font-headline-lg text-headline-lg text-primary">Why Choose HIRENEST</h2>
+          <p className="text-on-surface-variant font-body-md mt-2 max-w-2xl mx-auto">
+            We combine artificial intelligence with professional search methodologies to deliver candidates who stay and perform.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="p-8 bg-surface border border-outline-variant rounded-2xl flex flex-col items-center text-center shadow-sm hover:border-secondary transition-all">
+            <span className="material-symbols-outlined text-secondary text-4xl mb-4">smart_toy</span>
+            <h4 className="font-headline-sm text-base font-bold text-primary mb-2">AI-Assisted Recruitment</h4>
+            <p className="text-on-surface-variant text-sm">Leveraging next-gen algorithms to map passive candidate networks and predict organizational compatibility.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-tertiary p-10 rounded-2xl border border-white/10 relative">
-              <span className="material-symbols-outlined absolute top-6 right-8 text-secondary-container opacity-30 text-5xl">format_quote</span>
-              <p className="font-body-lg text-body-lg italic mb-8 leading-relaxed">"HireNest didn't just find us a candidate; they found us a future leader. Their understanding of our company culture was uncanny. The process was calm, professional, and ultimately very successful."</p>
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-surface-container-high overflow-hidden">
-                  <img 
-                    className="w-full h-full object-cover" 
-                    alt="Sarah Jenkins Jenkins Headshot" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAplmEwK8Wvb07FFgr6nufcBmxbi1siDmIuEz7GL2Tq2JTMQDvGIyQaAQJwBIEi7208qM76UatAn_jNH4saZvZS4rCMxLKuPrpPg1pMUrdr-eb_CAUhEFr-MtML3WZAMYV5W-WtbbyeMj8sfmIC2V-YiclB_8uXyLzitM5an6vA9BnVuz7DvGOsbrzBh_mvnvdAlZFD5oQXEX-KW59MlKTi4M_yHDXq6dC5FbyDCue8WyvHZ0erxRr3VGO_Hldsgm7qO8hyWwdHg"
-                  />
-                </div>
-                <div>
-                  <div className="font-headline-sm text-headline-sm leading-tight">Sarah Jenkins</div>
-                  <div className="text-secondary-container font-label-md">CTO, IT Enterprise</div>
-                </div>
+          <div className="p-8 bg-surface border border-outline-variant rounded-2xl flex flex-col items-center text-center shadow-sm hover:border-secondary transition-all">
+            <span className="material-symbols-outlined text-secondary text-4xl mb-4">verified</span>
+            <h4 className="font-headline-sm text-base font-bold text-primary mb-2">Pre-Screened Candidates</h4>
+            <p className="text-on-surface-variant text-sm">Our rigorous vetting verifies qualifications, technical expertise, and career stability.</p>
+          </div>
+          <div className="p-8 bg-surface border border-outline-variant rounded-2xl flex flex-col items-center text-center shadow-sm hover:border-secondary transition-all">
+            <span className="material-symbols-outlined text-secondary text-4xl mb-4">bolt</span>
+            <h4 className="font-headline-sm text-base font-bold text-primary mb-2">Fast Hiring</h4>
+            <p className="text-on-surface-variant text-sm">Reducing average time-to-hire to 7-14 days without sacrificing alignment or quality.</p>
+          </div>
+          <div className="p-8 bg-surface border border-outline-variant rounded-2xl flex flex-col items-center text-center shadow-sm hover:border-secondary transition-all">
+            <span className="material-symbols-outlined text-secondary text-4xl mb-4">map</span>
+            <h4 className="font-headline-sm text-base font-bold text-primary mb-2">PAN India Reach</h4>
+            <p className="text-on-surface-variant text-sm">A centralized sourcing structure capable of placing talent in any tier-1 or tier-2 city.</p>
+          </div>
+          <div className="p-8 bg-surface border border-outline-variant rounded-2xl flex flex-col items-center text-center shadow-sm hover:border-secondary transition-all">
+            <span className="material-symbols-outlined text-secondary text-4xl mb-4">support_agent</span>
+            <h4 className="font-headline-sm text-base font-bold text-primary mb-2">Dedicated Consultants</h4>
+            <p className="text-on-surface-variant text-sm">Single point of contact for your search, ensuring continuous progress and expert guidance.</p>
+          </div>
+          <div className="p-8 bg-surface border border-outline-variant rounded-2xl flex flex-col items-center text-center shadow-sm hover:border-secondary transition-all">
+            <span className="material-symbols-outlined text-secondary text-4xl mb-4">manage_accounts</span>
+            <h4 className="font-headline-sm text-base font-bold text-primary mb-2">Executive Search</h4>
+            <p className="text-on-surface-variant text-sm">Discreet C-suite and leadership acquisition tailored to confidential growth mandates.</p>
+          </div>
+          <div className="p-8 bg-surface border border-outline-variant rounded-2xl flex flex-col items-center text-center shadow-sm hover:border-secondary transition-all">
+            <span className="material-symbols-outlined text-secondary text-4xl mb-4">gavel</span>
+            <h4 className="font-headline-sm text-base font-bold text-primary mb-2">Ethical Hiring</h4>
+            <p className="text-on-surface-variant text-sm">Zero bias, strict candidate care standards, and complete transparency at every stage.</p>
+          </div>
+          <div className="p-8 bg-surface border border-outline-variant rounded-2xl flex flex-col items-center text-center shadow-sm hover:border-secondary transition-all">
+            <span className="material-symbols-outlined text-secondary text-4xl mb-4">psychology</span>
+            <h4 className="font-headline-sm text-base font-bold text-primary mb-2">Industry Specialists</h4>
+            <p className="text-on-surface-variant text-sm">Consultants with active experience in domains from technical systems to operational logistics.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-section-padding bg-surface-container-low px-8 border-t border-outline-variant">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider">❖ Frequently Asked Questions</div>
+            <h2 className="font-headline-lg text-headline-lg text-primary">FAQ</h2>
+          </div>
+          <div className="space-y-4">
+            {[
+              {
+                q: "What services does HIRENEST PLACEMENTS PRIVATE LIMITED offer?",
+                a: "HIRENEST PLACEMENTS PRIVATE LIMITED provides comprehensive recruitment services including Executive Search, Permanent Recruitment, Bulk Hiring, Contract Staffing, Campus Recruitment, and Industry-Specific Recruitment."
+              },
+              {
+                q: "Which industries do you specialize in?",
+                a: "We specialize in staffing for Information Technology, Logistics, Supply Chain, Manufacturing, Engineering, Healthcare, Pharmaceuticals, BFSI, Retail, E-Commerce, Sales, Marketing, Human Resources, Administration, Startups, MSMEs, and Large Enterprises."
+              },
+              {
+                q: "Do you provide recruitment services across India?",
+                a: "Yes. HIRENEST PLACEMENTS PRIVATE LIMITED operates a robust PAN India recruitment network, connecting employers with qualified candidates across all major states and industrial corridors."
+              },
+              {
+                q: "How do you ensure candidate quality?",
+                a: "We deploy AI-assisted sourcing, detailed market intelligence, and a multi-layer candidate screening process. Technical competencies, career stability, and cultural fit are evaluated by our industry-specific consultants before any profile is shortlisted."
+              },
+              {
+                q: "How quickly can you close a position?",
+                a: "Our standard turnaround time is between 7 to 14 business days, depending on the level of specialization, geographic location, and specific mandate details."
+              },
+              {
+                q: "Can you handle bulk hiring requirements?",
+                a: "Yes. We possess dedicated bulk recruitment teams capable of managing high-volume mandates for retail expansions, startup scaling, operational rollouts, and seasonal requirements without compromising candidate quality."
+              },
+              {
+                q: "Do you recruit for startups as well as large enterprises?",
+                a: "Yes, we support organizations of all scales. We act as talent partners for early-stage startups making their first foundational hires, mid-market enterprises, MSMEs, and multinational corporations."
+              },
+              {
+                q: "What makes HIRENEST different from other recruitment agencies?",
+                a: "HIRENEST combines cutting-edge AI-assisted sourcing with traditional expert vetting. We emphasize ethical hiring practices, transparent communication, and long-term candidate retention, resulting in exceptionally low turnover rates."
+              },
+              {
+                q: "Do you provide executive and leadership hiring?",
+                a: "Yes, our Executive Search division specializes in confidential and strategic sourcing for C-suite executives, directors, VPs, and senior leadership positions."
+              },
+              {
+                q: "How can employers start working with HIRENEST?",
+                a: "Employers can initiate a partnership by clicking the 'Hire Talent' button on our homepage, filling out the Contact page form, or emailing us directly at info@hirenestplacement.com to schedule a briefing session."
+              },
+              {
+                q: "How can job seekers apply?",
+                a: "Job seekers can submit their resume through our 'Submit Resume' page or apply to active listings on our 'Current Openings' page."
+              },
+              {
+                q: "Do you charge job seekers?",
+                a: "No, HIRENEST PLACEMENTS PRIVATE LIMITED does not charge job seekers any fees for registration, assessment, or job placement services."
+              },
+              {
+                q: "Do you maintain confidentiality?",
+                a: "Yes, we adhere to strict confidentiality protocols. Candidate details are only shared with prospective employers after explicit consent, and employer mandates can be conducted on a completely unbranded basis if requested."
+              },
+              {
+                q: "Why should companies outsource recruitment?",
+                a: "Outsourcing recruitment allows companies to leverage specialized sourcing talent, reduce overall time-to-hire, minimize recruitment costs, scale hiring capacity dynamically, and access pre-vetted, passive candidate pools."
+              },
+              {
+                q: "How do I request a recruitment consultation?",
+                a: "You can request a complimentary talent consultation by reaching out via our Contact page or emailing us directly at info@hirenestplacement.com."
+              }
+            ].map((faq, idx) => (
+              <div key={idx} className="bg-surface rounded-xl border border-outline-variant overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full px-6 py-4 text-left flex justify-between items-center text-primary font-bold hover:bg-surface-container transition-all text-sm lg:text-base"
+                >
+                  <span>{faq.q}</span>
+                  <span className="material-symbols-outlined transition-transform duration-200" style={{ transform: openFaq === idx ? 'rotate(180deg)' : 'none' }}>
+                    expand_more
+                  </span>
+                </button>
+                {openFaq === idx && (
+                  <div className="px-6 pb-4 pt-2 text-on-surface-variant font-body-md border-t border-outline-variant bg-surface-container-low text-xs lg:text-sm">
+                    {faq.a}
+                  </div>
+                )}
               </div>
-            </div>
-            <div className="bg-tertiary p-10 rounded-2xl border border-white/10 relative">
-              <span className="material-symbols-outlined absolute top-6 right-8 text-secondary-container opacity-30 text-5xl">format_quote</span>
-              <p className="font-body-lg text-body-lg italic mb-8 leading-relaxed">"Transitioning to an executive role can be daunting, but the team at HireNest provided exceptional guidance. Their discretion and precision were exactly what I needed for my next career leap."</p>
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-surface-container-high overflow-hidden">
-                  <img 
-                    className="w-full h-full object-cover" 
-                    alt="Marcus Thorne Headshot" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPKLRKqpHgdjTnZ2TKwhyxGakjGKSD-rwHOyWaR5zwkOAQ7uS5k9kXTi4peS6RuC_owQ8iyawFSp30Psm3eu86okJjrC7L8h7sA9-p9Lw8SCBp-QMP_s8AoyudyrRpCvYLtTVoDzWG6FPweIIqnYa9KW9eKaKIpsw8hSejc-GgGyoAP3HxDxRs5tU6uFnX1IiofRPOnMBNly3xqrkxxx5KSz9F2MUh4Ur6CoaYY283aa3TpaHC8j_SE4MbkkrI8QP0pG89GsrkPA"
-                  />
-                </div>
-                <div>
-                  <div className="font-headline-sm text-headline-sm leading-tight">Marcus Thorne</div>
-                  <div className="text-secondary-container font-label-md">COO, Logistics Group</div>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -349,7 +479,7 @@ const HomePage = () => {
       <section className="py-24 bg-background px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="font-display-hero text-headline-lg-mobile md:text-display-hero text-primary mb-8">Ready to Elevate Your Team?</h2>
-          <p className="font-body-lg text-body-lg text-on-surface-variant mb-12">Partner with HireNest today and experience recruitment redefined. Our consultants are standing by to discuss your specific needs.</p>
+          <p className="font-body-lg text-body-lg text-on-surface-variant mb-12">Partner with HIRENEST today and experience recruitment redefined. Our consultants are standing by to discuss your specific needs.</p>
           <div className="flex flex-wrap justify-center gap-6">
             <Link to="/contact" className="px-10 py-5 rounded-full bg-primary text-on-primary font-bold text-lg hover:scale-105 transition-transform flex items-center gap-3 justify-center">
               Book a Consultation <span className="material-symbols-outlined">calendar_month</span>
