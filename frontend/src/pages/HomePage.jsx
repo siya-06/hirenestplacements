@@ -73,17 +73,21 @@ const HomePage = () => {
     <div>
       {/* Dual-Panel Split Hero Section */}
       <section className="py-section-padding px-8 max-w-container-max mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter min-h-[600px]">
+        <div className="flex flex-col lg:flex-row gap-gutter min-h-[600px] items-stretch">
           {/* Left Image Panel */}
-          <div className="hero-split-mask h-full min-h-[400px]">
+          <div className="hero-split-mask w-full lg:w-[45%] min-h-[400px]">
             <img 
-              className="w-full h-full object-cover" 
-              alt="Professional executives focusing on laptop in boardroom" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQLkVr4-aoID7pCg4__jCToIro2v67_X_UVtvyK8NXAj-U3s0G6xL-DpXKCNzPEvPU8EO3gqcncnykehDNulAscP8Gf1PkooSNDwctMA91zwDgmqtbIiRws-u8kbuVTU55HBqMj1OuArCHFWSc3A2nPk-xbW1ZLZ2t89mdvrp1FCVLPxiO2aLcvRXX3SN3_XygEa3jTnu59RnS9Fi-MxHih9S7RVdxwRB5EI67Vs78Fqpnz8Yp2qEVUqKta1JcX8f4HQScBgJ1bg"
+              className="w-full h-full object-cover rounded-[24px]" 
+              alt="Professional executives roundtable meeting" 
+              src="/hero-roundtable.jpg"
             />
           </div>
           {/* Right Content Panel */}
-          <div className="bg-primary p-12 lg:p-16 flex flex-col justify-center rounded-[24px] text-on-primary relative overflow-hidden">
+          <div className="bg-gradient-to-br from-[#0B2E59] via-[#10305B] to-[#051B36] p-12 lg:p-16 flex flex-col justify-center rounded-[24px] text-on-primary relative overflow-hidden w-full lg:w-[55%]">
+            {/* Subtle Grid and Dots Pattern Background */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.06]" style={{ backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px)", backgroundSize: "32px 32px" }}></div>
+            <div className="absolute inset-0 pointer-events-none opacity-[0.07]" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.4) 1.5px, transparent 1.5px)", backgroundSize: "16px 16px" }}></div>
+            
             <div className="relative z-10">
               <div className="font-indicator text-indicator uppercase tracking-widest mb-6 opacity-80 flex items-center">
                 <span className="mr-2">❖</span> Reach Beyond the Limits
@@ -103,8 +107,6 @@ const HomePage = () => {
                 </Link>
               </div>
             </div>
-            {/* Subtle Texture Overlay */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 0)", backgroundSize: "24px 24px" }}></div>
           </div>
         </div>
       </section>
@@ -122,46 +124,6 @@ const HomePage = () => {
             <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">account_balance</span> Finance & Ins.</span>
             <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">local_shipping</span> Logistics</span>
             <span className="font-headline-sm text-[15px] font-bold text-primary flex items-center justify-center gap-2"><span className="material-symbols-outlined text-secondary">domain</span> Real Estate</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Statistics Section */}
-      <section className="py-section-padding bg-background px-8 max-w-container-max mx-auto">
-        <div className="text-center mb-16">
-          <div className="font-indicator text-indicator text-secondary uppercase mb-4 tracking-wider flex justify-center items-center">
-            <span className="mr-2">❖</span> Our Impact
-          </div>
-          <h2 className="font-headline-lg text-headline-lg text-primary">Measured in Results, Built on Trust</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
-          <div className="bg-surface p-10 rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform group">
-            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>handshake</span>
-            </div>
-            <div className="text-[32px] font-bold text-primary mb-1">150+</div>
-            <p className="text-on-surface-variant font-label-md">Hiring Partners</p>
-          </div>
-          <div className="bg-surface p-10 rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform group">
-            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>domain</span>
-            </div>
-            <div className="text-[32px] font-bold text-primary mb-1">25+</div>
-            <p className="text-on-surface-variant font-label-md">Industry Domains</p>
-          </div>
-          <div className="bg-surface p-10 rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform group">
-            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>groups</span>
-            </div>
-            <div className="text-[32px] font-bold text-primary mb-1">750+</div>
-            <p className="text-on-surface-variant font-label-md">Successful Placements</p>
-          </div>
-          <div className="bg-surface p-10 rounded-xl border border-outline-variant shadow-sm hover:-translate-y-1 transition-transform group">
-            <div className="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center mb-6 text-primary group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>public</span>
-            </div>
-            <div className="text-[32px] font-bold text-primary mb-1">PAN India</div>
-            <p className="text-on-surface-variant font-label-md">Recruitment Network</p>
           </div>
         </div>
       </section>
