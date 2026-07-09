@@ -35,11 +35,16 @@ export const upload = multer({
 // Helper function to upload buffer to Cloudinary
 const uploadToCloudinary = (fileBuffer, originalName) => {
   return new Promise((resolve, reject) => {
+    const lastDotIndex = originalName.lastIndexOf('.');
+    const baseName = lastDotIndex > 0 ? originalName.slice(0, lastDotIndex) : originalName;
+    const extension = lastDotIndex > 0 ? originalName.slice(lastDotIndex) : '';
+    const sanitizedBase = baseName.replace(/[^a-zA-Z0-9-_]/g, '_');
+
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: 'hirenest_resumes',
-        resource_type: 'raw', // Support PDF/DOCX
-        public_id: `${Date.now()}-${originalName.replace(/\.[^/.]+$/, '')}`,
+        resource_type: 'raw',
+        public_id: `${Date.now()}-${sanitizedBase}${extension}`,
       },
       (error, result) => {
         if (error) return reject(error);

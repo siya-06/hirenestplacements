@@ -28,6 +28,7 @@ const AdminPortalPage = () => {
   
   // Modal & Selection States
   const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [previewCandidate, setPreviewCandidate] = useState(null);
   const [jobModalOpen, setJobModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState(null); // null if creating
   
@@ -291,6 +292,13 @@ const AdminPortalPage = () => {
       if (err.response?.status === 401) handleLogout();
       setErrorMsg('Failed to update inquiry status.');
     }
+  };
+
+  // Builds an embeddable preview URL for a resume file (PDF, DOC, or DOCX) using
+  // Google's Docs Viewer, rendering it inline instead of forcing a download.
+  const getResumePreviewUrl = (resumeUrl) => {
+    if (!resumeUrl) return '';
+    return `https://docs.google.com/viewer?url=${encodeURIComponent(resumeUrl)}&embedded=true`;
   };
 
   // Candidate Filters
@@ -747,14 +755,21 @@ const AdminPortalPage = () => {
                 <div>
                   <h5 className="text-xs text-[#707974] font-bold uppercase tracking-wider mb-2">Resume File</h5>
                   <p className="text-xs text-on-surface-variant mb-2 truncate font-mono">{selectedCandidate.resumeFilename || 'resume.pdf'}</p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
+                    <button
+                      type="button"
+                      onClick={() => setPreviewCandidate(selectedCandidate)}
+                      className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-full hover:brightness-105 transition-all"
+                    >
+                      <span className="material-symbols-outlined text-sm">visibility</span> Preview
+                    </button>
                     <a 
                       href={selectedCandidate.resumeUrl} 
                       target="_blank" 
                       rel="noreferrer"
                       className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-full hover:brightness-105 transition-all"
                     >
-                      <span className="material-symbols-outlined text-sm">open_in_new</span> Open
+                      <span className="material-symbols-outlined text-sm">open_in_new</span> Open Raw
                     </a>
                     <a 
                       href={selectedCandidate.resumeUrl} 
@@ -959,6 +974,53 @@ const AdminPortalPage = () => {
               </div>
             </form>
 
+          </div>
+        </div>
+      )}
+
+      {previewCandidate && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-surface rounded-2xl shadow-2xl w-full max-w-4xl h-[85vh] flex flex-col overflow-hidden">
+            <div className="bg-primary text-on-primary px-6 py-4 flex justify-between items-center shrink-0">
+              <div className="min-w-0">
+                <h4 className="font-bold text-sm truncate">{previewCandidate.fullName}'s Resume</h4>
+                <p className="text-xs opacity-80 truncate font-mono">{previewCandidate.resumeFilename || 'resume.pdf'}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPreviewCandidate(null)}
+                className="shrink-0 ml-4"
+                aria-label="Close preview"
+              >
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <div className="flex-1 bg-surface-container-lowest relative">
+              <iframe
+                key={previewCandidate._id}
+                src={getResumePreviewUrl(previewCandidate.resumeUrl)}
+                title="Resume preview"
+                className="w-full h-full border-0"
+              />
+            </div>
+            <div className="bg-surface-container px-6 py-3 border-t border-outline-variant flex justify-end gap-3 shrink-0">
+              <a
+                href={previewCandidate.resumeUrl}
+                download={previewCandidate.resumeFilename || "resume.pdf"}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 px-4 py-2 bg-secondary text-on-secondary font-bold text-xs rounded-full hover:brightness-105 transition-all"
+              >
+                <span className="material-symbols-outlined text-sm">download</span> Download
+              </a>
+              <button
+                type="button"
+                onClick={() => setPreviewCandidate(null)}
+                className="px-4 py-2 border border-outline text-on-surface hover:bg-surface-container-high font-bold text-xs rounded-full transition-all"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
